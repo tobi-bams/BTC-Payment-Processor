@@ -1,11 +1,12 @@
 import React, { useState } from "react"
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faHome,
-    faFileInvoice,
     faBars,
     faTimes,
+    faBoxArchive,
+    faBriefcase
 } from "@fortawesome/free-solid-svg-icons"
 
 import Button from "../components/Button"
@@ -29,24 +30,29 @@ function SideNav() {
             </Link>
             <div className="flex-1 mt-8">
                 <div className="px-8">
-                    <Button text="Store name" size="lg" full />
+                    <Button text="Create store" size="sm" type="secondary" full />
                 </div>
                 <div className="mt-6">
-                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-4 text-sm transition-colors duration-200 ease-in-out hover:text-blue-400 bg-blue-900 border-blue-400' to='/'>
+                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-4 transition-colors duration-200 ease-in-out text-black hover:text-blue-400 border-blue-400' to='/'>
                         <div>
                             <FontAwesomeIcon icon={faHome} className="mr-4" /> Dashboard
                         </div>
                     </Link>
-                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent text-sm transition-colors duration-200 ease-in-out hover:text-blue-400' to='/'>
+                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent transition-colors duration-200 ease-in-out text-black hover:text-blue-400' to='/'>
                         <div>
-                            <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> Invoices
+                            <FontAwesomeIcon icon={faBoxArchive} className="mr-4" /> Products
+                        </div>
+                    </Link>
+                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent transition-colors duration-200 ease-in-out text-black hover:text-blue-400' to='/'>
+                        <div>
+                            <FontAwesomeIcon icon={faBriefcase} className="mr-4" /> Transactions
                         </div>
                     </Link>
                 </div>
             </div>
             <div className="flex px-8 py-6 items-center">
                 <Avatar image="https://unavatar.io/rukundocollin@gmail.com" />
-                <div class="flex-1 ml-4">
+                <div className="flex-1 ml-4">
                     <p className="font-medium text-black leading-none">Qala</p>
                     <Link className='no-underline text-xs text-gray-300 leading-none' to='/'>
                         Edit Profile
