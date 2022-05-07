@@ -462,6 +462,14 @@ Ensure the default browser behavior of the `hidden` attribute.
   margin-top: 1rem;
 }
 
+.mt-2{
+  margin-top: 0.5rem;
+}
+
+.mb-2{
+  margin-bottom: 0.5rem;
+}
+
 .mt-8{
   margin-top: 2rem;
 }
@@ -484,6 +492,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .mb-4{
   margin-bottom: 1rem;
+}
+
+.mb-6{
+  margin-bottom: 1.5rem;
 }
 
 .block{
@@ -602,6 +614,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   width: 18rem;
 }
 
+.max-w-xs{
+  max-width: 20rem;
+}
+
 .max-w-full{
   max-width: 100%;
 }
@@ -665,6 +681,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .flex-col{
   flex-direction: column;
+}
+
+.flex-col-reverse{
+  flex-direction: column-reverse;
+}
+
+.flex-wrap{
+  flex-wrap: wrap;
 }
 
 .items-center{
@@ -745,6 +769,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .border-gray-100{
   --tw-border-opacity: 1;
   border-color: rgb(243 244 246 / var(--tw-border-opacity));
+}
+
+.border-gray-300{
+  --tw-border-opacity: 1;
+  border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
 
 .border-transparent{
@@ -896,6 +925,10 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .text-xl{
   font-size: 1.25rem;
+}
+
+.text-6xl{
+  font-size: 4rem;
 }
 
 .text-3xl{
@@ -1096,6 +1129,25 @@ Ensure the default browser behavior of the `hidden` attribute.
   outline-offset: 2px;
 }
 
+@media (min-width: 640px){
+
+  .sm\:mb-0{
+    margin-bottom: 0px;
+  }
+
+  .sm\:mr-2{
+    margin-right: 0.5rem;
+  }
+
+  .sm\:flex-row{
+    flex-direction: row;
+  }
+
+  .sm\:text-3xl{
+    font-size: 1.875rem;
+  }
+}
+
 @media (min-width: 1024px){
 
   .lg\:absolute{
@@ -1113,5 +1165,12 @@ Ensure the default browser behavior of the `hidden` attribute.
   .lg\:translate-x-0{
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+}
+
+@media (min-width: 1280px){
+
+  .xl\:mb-0{
+    margin-bottom: 0px;
   }
 }

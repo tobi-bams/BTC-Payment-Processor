@@ -1,10 +1,13 @@
-import classes from './Layout.module.css'
 import SideNav from '../../elements/SideNav'
 
 function Layout(props) {
-    return <div>
+    return <div className="flex">
         <SideNav />
-        <main className={classes.main}>{props.children}</main>
+        <div className="flex-1 min-h-screen bg-gray-200">
+            <div className="w-full max-w-screen-xl py-6 px-6">
+                {props.children}
+            </div>
+        </div>
     </div>
 }
 
