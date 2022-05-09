@@ -19,7 +19,6 @@ export const SignIn = async (email: string, password: string) => {
   });
 
   if (validation.error) {
-    console.log("Happy");
     return ResponseHandler(422, validation.error.details[0].message);
   }
   const SECRET: any = process.env.JWT_SECRET_TOKEN;
