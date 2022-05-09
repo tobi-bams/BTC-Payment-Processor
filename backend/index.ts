@@ -2,12 +2,14 @@ import express, { Application, Request, Response } from "express";
 const { sequelize } = require("./models");
 import cors from "cors";
 import Auth from "./routes/auth";
+import Store from "./routes/store";
 
 const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
 app.use("/auth", Auth);
+app.use("/store", Store);
 
 const PORT = process.env.PORT || 5000;
 
