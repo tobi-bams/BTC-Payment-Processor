@@ -5,7 +5,7 @@ import { CreateStore } from "../controller/store";
 const route: Router = express.Router();
 
 route.post("/create", auth, async (req: Request, res: Response) => {
-  const response = await CreateStore(req.body.user);
+  const response = await CreateStore(req.body.name, req.body.user);
   res.status(response.status).json(response.body);
 });
 
