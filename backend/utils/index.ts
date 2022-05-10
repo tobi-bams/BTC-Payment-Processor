@@ -14,3 +14,9 @@ export const ResponseHandler = (
 ): Res => {
   return { status, body: { message, data } };
 };
+
+export const ValidateXpubKey = (xpub: string) => {
+  // TODO
+  // Validate Xpub Key
+  return true;
+};
