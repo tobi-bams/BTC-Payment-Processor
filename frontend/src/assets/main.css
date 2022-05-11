@@ -449,11 +449,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   z-index: 50;
 }
 
-.my-2{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
 .mx-auto{
   margin-left: auto;
   margin-right: auto;
@@ -467,14 +462,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 .my-6{
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
-}
-
-.mr-3{
-  margin-right: 0.75rem;
-}
-
-.ml-6{
-  margin-left: 1.5rem;
 }
 
 .mt-8{
@@ -913,11 +900,6 @@ Ensure the default browser behavior of the `hidden` attribute.
   padding-right: 1.5rem;
 }
 
-.px-2{
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
 .px-8{
   padding-left: 2rem;
   padding-right: 2rem;
@@ -941,6 +923,11 @@ Ensure the default browser behavior of the `hidden` attribute.
 .py-1{
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.px-2{
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .py-2{
@@ -1009,11 +996,6 @@ Ensure the default browser behavior of the `hidden` attribute.
 
 .leading-none{
   line-height: 1;
-}
-
-.text-gray-200{
-  --tw-text-opacity: 1;
-  color: rgb(229 231 235 / var(--tw-text-opacity));
 }
 
 .text-white{
@@ -1304,6 +1286,24 @@ Ensure the default browser behavior of the `hidden` attribute.
   .lg\:translate-x-0{
     --tw-translate-x: 0px;
     transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
+
+  .lg\:flex-row{
+    flex-direction: row;
+  }
+
+  .lg\:px-0{
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  .lg\:px-6{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .lg\:pl-12{
+    padding-left: 3rem;
   }
 }
 

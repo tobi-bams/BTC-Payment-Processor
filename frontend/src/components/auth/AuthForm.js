@@ -57,7 +57,9 @@ const AuthForm = () => {
                 });
             }
         }).then(data => {
-            authCtx.login(data.token);
+            const expirationTime = new Date(new Date().getTime() + (3600 * 1000)); // convert 1 hour to timestamp (milliseconds)
+            // set timer to expire login token after 1 hour
+            authCtx.login(data.data.token, expirationTime.toISOString());
             // if login successful, redirect to dashboard.
             history.replace("/dashboard");
         })

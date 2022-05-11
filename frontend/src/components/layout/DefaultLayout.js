@@ -11,7 +11,9 @@ const DefaultLayout = (props) => {
     return (
         <Fragment>
             <NavBar />
-            {props.children}
+            <div className="w-full flex flex-col lg:flex-row lg:px-6">
+                {props.children}
+            </div>
         </Fragment>
     );
 };
