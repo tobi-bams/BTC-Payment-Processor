@@ -9,8 +9,8 @@ import {
     faBriefcase
 } from "@fortawesome/free-solid-svg-icons"
 
-import Button from "../components/Button"
-import Avatar from "../components/Avatar"
+import Button from "../components/ui/Button"
+import Avatar from "../components/ui/Avatar"
 
 function SideNav() {
     const [mobileOpen, setMobileOpen] = useState(false)
@@ -30,22 +30,22 @@ function SideNav() {
             </Link>
             <div className="flex-1 mt-8">
                 <div className="px-8">
-                    <Link to='/create-store'>
+                    <Link to='/dashboard/create-store'>
                         <Button text="Create store" size="sm" type="secondary" full />
                     </Link>
                 </div>
                 <div className="mt-6">
-                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-4 transition-colors duration-200 ease-in-out text-black hover:text-blue-400 border-blue-400' to='/'>
+                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-4 transition-colors duration-200 ease-in-out text-black hover:text-blue-400 border-blue-400' to='/dashboard'>
                         <div>
                             <FontAwesomeIcon icon={faHome} className="mr-4" /> Dashboard
                         </div>
                     </Link>
-                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent transition-colors duration-200 ease-in-out text-black hover:text-blue-400' to='/products'>
+                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent transition-colors duration-200 ease-in-out text-black hover:text-blue-400' to='/dashboard/products'>
                         <div>
                             <FontAwesomeIcon icon={faBoxArchive} className="mr-4" /> Products
                         </div>
                     </Link>
-                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent transition-colors duration-200 ease-in-out text-black hover:text-blue-400' to='/transactions'>
+                    <Link className='flex justify-between no-underline w-full px-8 py-3 border-l-2 border-transparent transition-colors duration-200 ease-in-out text-black hover:text-blue-400' to='/dashboard/transactions'>
                         <div>
                             <FontAwesomeIcon icon={faBriefcase} className="mr-4" /> Transactions
                         </div>

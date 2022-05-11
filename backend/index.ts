@@ -8,6 +8,10 @@ const app: Application = express();
 
 app.use(cors());
 app.use(express.json());
+//You can use this to check if your server is working
+app.get('/', (req, res) => {
+  res.send("Welcome to your server")
+})
 app.use("/auth", Auth);
 app.use("/store", Store);
 
