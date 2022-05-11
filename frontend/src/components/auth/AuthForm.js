@@ -1,11 +1,12 @@
 import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import AuthContext from "../../store/auth-context";
 
 import Button from '../ui/Button';
 import FormGroup from '../ui/FormGroup';
 
 const AuthForm = () => {
-
+    const history = useHistory()
     const emailInputRef = React.createRef();
     const passwordInputRef = React.createRef();
 
@@ -57,6 +58,8 @@ const AuthForm = () => {
             }
         }).then(data => {
             authCtx.login(data.token);
+            // if login successful, redirect to dashboard.
+            history.replace("/dashboard");
         })
             .catch(err => {
                 alert(err.message);

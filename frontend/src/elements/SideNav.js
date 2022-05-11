@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
@@ -11,8 +11,18 @@ import {
 
 import Button from "../components/ui/Button"
 import Avatar from "../components/ui/Avatar"
+import AuthContext from "../store/auth-context"
 
 function SideNav() {
+
+    const authCtx = useContext(AuthContext);
+
+    const isLoggedIn = authCtx.isLoggedIn;
+
+    const logoutHandler = () => {
+        authCtx.logout();
+    }
+
     const [mobileOpen, setMobileOpen] = useState(false)
     let navClass =
         "w-72 max-w-full bg-white-800 h-screen flex flex-col text-white fixed lg:absolute lg:sticky top-0 transition-transform transform duration-500 ease"
@@ -56,8 +66,8 @@ function SideNav() {
                 <Avatar image="https://unavatar.io/rukundocollin@gmail.com" />
                 <div className="flex-1 ml-4">
                     <p className="font-medium text-black leading-none">Qala</p>
-                    <Link className='no-underline text-xs text-gray-300 leading-none' to='/'>
-                        Edit Profile
+                    <Link className='no-underline text-xs text-gray-300 leading-none' to="/" onClick={logoutHandler}>
+                        Logout
                     </Link>
                 </div>
             </div>
