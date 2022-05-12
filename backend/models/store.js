@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         id: undefined,
         createdAt: undefined,
         updatedAt: undefined,
+        userId: undefined,
       };
     }
   }

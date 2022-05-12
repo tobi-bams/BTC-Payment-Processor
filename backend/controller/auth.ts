@@ -5,6 +5,20 @@ const joi = require("joi");
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 
+interface User {
+  email: string;
+  id: number;
+}
+
+interface SessionUser {
+  email: string;
+  role: string;
+  store: {
+    name: string;
+    id: string;
+  } | null;
+}
+
 dotenv.config();
 
 export const SignIn = async (email: string, password: string) => {
@@ -34,7 +48,7 @@ export const SignIn = async (email: string, password: string) => {
     }
 
     let token = jwt.sign(
-      { id: user.id, email: user.email, role: user.email },
+      { id: user.id, email: user.email, role: user.role },
       SECRET
     );
     return ResponseHandler(200, "Login Successfull", { token });
@@ -70,6 +84,32 @@ export const SignUp = async (email: string, password: string) => {
     });
     return ResponseHandler(201, "Account Created Successfully");
   } catch (error) {
+    return ResponseHandler(500, "An Error Occured");
+  }
+};
+
+export const Session = async (user: User) => {
+  try {
+    const userRecord = await models.User.findOne({
+      where: { id: user.id },
+      include: models.Store,
+    });
+    let currentUser: SessionUser = {
+      email: userRecord.email,
+      role: userRecord.role,
+      store: null,
+    };
+    if (userRecord.Stores) {
+      if (userRecord?.Stores.length > 0) {
+        currentUser.store = {
+          name: userRecord.Stores[0].name,
+          id: userRecord.Stores[0].uuid,
+        };
+      }
+    }
+    return ResponseHandler(200, "User details", currentUser);
+  } catch (error) {
+    console.log(error);
     return ResponseHandler(500, "An Error Occured");
   }
 };

@@ -11,6 +11,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       User.hasMany(models.Store);
     }
+    toJSON() {
+      return {
+        ...this.get(),
+        id: undefined,
+        password: undefined,
+        createdAt: undefined,
+        updatedAt: undefined,
+      };
+    }
   }
   User.init(
     {
