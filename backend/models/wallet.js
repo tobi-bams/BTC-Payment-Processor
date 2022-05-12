@@ -1,7 +1,7 @@
 "use strict";
-const { Model, UUIDV4 } = require("sequelize");
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Store extends Model {
+  class Wallet extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,10 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Store.belongsTo(models.User);
-      Store.hasOne(models.Wallet, { foreignKey: "storeUuid" });
+      Wallet.belongsTo(models.Store, { foreignKey: "storeUuid" });
     }
-
     toJSON() {
       return {
         ...this.get(),
@@ -22,26 +20,28 @@ module.exports = (sequelize, DataTypes) => {
       };
     }
   }
-  Store.init(
+  Wallet.init(
     {
-      uuid: {
-        type: DataTypes.UUID,
-        allowNull: false,
-        defaultValue: UUIDV4,
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-      },
-      name: {
+      xpub: {
         type: DataTypes.STRING,
-        allowNull: false,
+      },
+      storeUuid: {
+        type: DataTypes.UUID,
+      },
+      derivationPath: {
+        type: DataTypes.STRING,
+      },
+      currentIndex: {
+        type: DataTypes.INTEGER,
+      },
+      macaroon: {
+        type: DataTypes.STRING,
       },
     },
     {
       sequelize,
-      modelName: "Store",
+      modelName: "Wallet",
     }
   );
-  return Store;
+  return Wallet;
 };
