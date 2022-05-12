@@ -1,9 +1,12 @@
-import { ResponseHandler, ValidateXpubKey } from "../utils";
+import { ResponseHandler, ValidateXpubKey, ValidateMacaroon } from "../utils";
 const models = require("../models");
 
 interface CreateBitcoinWallet {
   xpub: string;
-  storeId: string;
+}
+
+interface CreateLigWallet {
+  macaroon: string;
 }
 
 export const CreateBitcoinWallet = async (
@@ -44,7 +47,7 @@ export const CreateBitcoinWallet = async (
               );
               return ResponseHandler(
                 201,
-                "Bitcoin Wallet Updated Successfully"
+                "Bitcoin Watch Only Wallet Updated Successfully"
               );
             }
           } else {
@@ -56,7 +59,7 @@ export const CreateBitcoinWallet = async (
             });
             return ResponseHandler(
               201,
-              "Bitcoin Wallet Successfully Created",
+              "Bitcoin Watch Only Wallet Successfully Created",
               bitcoinWallet
             );
           }
@@ -70,5 +73,54 @@ export const CreateBitcoinWallet = async (
     }
   } else {
     return ResponseHandler(422, "Xpub Key Incorrect");
+  }
+};
+
+export const CreateLighningWallet = async (
+  body: CreateLigWallet,
+  params: any
+) => {
+  const testMacroon = ValidateMacaroon(body.macaroon);
+  if (testMacroon) {
+    try {
+      const storeExist = await models.Store.findOne({
+        where: { uuid: params.storeId },
+      });
+      if (storeExist) {
+        const userWallet = await models.Wallet.findOne({
+          where: { storeUuid: params.storeId },
+        });
+        if (userWallet) {
+          if (!userWallet.macaroon) {
+            const updateWallet = await models.Wallet.update(
+              { macaroon: body.macaroon },
+              { where: { storeUuid: params.storeId } }
+            );
+            return ResponseHandler(
+              210,
+              "Lightning Watch Only Wallet Created Successfully"
+            );
+          } else {
+            return ResponseHandler(422, "Invalid Macaroon");
+          }
+        } else {
+          const lightningWallet = await models.Wallet.create({
+            macaroon: body.macaroon,
+            storeUuid: params.storeId,
+          });
+          return ResponseHandler(
+            201,
+            "Lightning Watch Only Wallet Created Successfully"
+          );
+        }
+      } else {
+        return ResponseHandler(401, "Invalid User");
+      }
+    } catch (error) {
+      console.log(error);
+      return ResponseHandler(500, "Internal Server Error");
+    }
+  } else {
+    return ResponseHandler(422, "Invalid Macaroon");
   }
 };
