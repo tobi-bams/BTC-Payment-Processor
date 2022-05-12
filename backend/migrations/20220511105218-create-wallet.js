@@ -1,29 +1,32 @@
 "use strict";
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Stores", {
+    await queryInterface.createTable("Wallets", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      uuid: {
+      storeUuid: {
         type: Sequelize.STRING,
-        allowNull: false,
-        unique: true,
-      },
-      userId: {
-        type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Users",
-          key: "id",
+          model: "Stores",
+          key: "uuid",
         },
       },
-      name: {
+      xpub: {
         type: Sequelize.STRING,
-        allowNull: false,
+      },
+      derivationPath: {
+        type: Sequelize.STRING,
+      },
+      currentIndex: {
+        type: Sequelize.INTEGER,
+      },
+      macaroon: {
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
@@ -36,6 +39,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Stores");
+    await queryInterface.dropTable("Wallets");
   },
 };

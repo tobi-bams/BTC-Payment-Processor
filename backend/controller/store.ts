@@ -12,11 +12,21 @@ export const CreateStore = async (name: string, user: any) => {
     return ResponseHandler(422, validation.error.details[0].message);
   }
   try {
-    const store = await models.Store.create({
-      name,
-      userId: user.id,
+    const storeExist = await models.Store.findOne({
+      where: { userId: user.id },
     });
-    return ResponseHandler(201, "Store Created Successfully", store);
+    if (!storeExist) {
+      const store = await models.Store.create({
+        name,
+        userId: user.id,
+      });
+      return ResponseHandler(201, "Store Created Successfully", store);
+    } else {
+      return ResponseHandler(
+        401,
+        "You can't create more than one Store at the moment"
+      );
+    }
   } catch (error) {
     console.log(error);
     return ResponseHandler(500, "An Error Occured");

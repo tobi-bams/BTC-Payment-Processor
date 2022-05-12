@@ -20,3 +20,7 @@ export const ValidateXpubKey = (xpub: string) => {
   // Validate Xpub Key
   return true;
 };
+
+export const ValidateMacaroon = (macaroon: string) => {
+  return true;
+};
