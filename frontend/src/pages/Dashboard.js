@@ -1,4 +1,4 @@
-import StatCard from "../components/StatCard"
+import StatCard from "../components/ui/StatCard"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
     faBriefcase,
