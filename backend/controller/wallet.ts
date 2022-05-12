@@ -1,12 +1,18 @@
 import { ResponseHandler, ValidateXpubKey, ValidateMacaroon } from "../utils";
 const models = require("../models");
 
+interface User {
+  id: number;
+}
+
 interface CreateBitcoinWallet {
   xpub: string;
+  user: User;
 }
 
 interface CreateLigWallet {
   macaroon: string;
+  user: User;
 }
 
 export const CreateBitcoinWallet = async (
@@ -24,45 +30,49 @@ export const CreateBitcoinWallet = async (
         where: { uuid: params.storeId },
       });
       if (storeExist) {
-        const xpubExist = await models.Wallet.findOne({
-          where: { xpub: body.xpub },
-        });
-        if (xpubExist) {
-          return ResponseHandler(422, "Invalid Extended Public key");
-        } else {
-          const wallet = await models.Wallet.findOne({
-            where: { storeUuid: params.storeId },
+        if (storeExist.userId === body.user.id) {
+          const xpubExist = await models.Wallet.findOne({
+            where: { xpub: body.xpub },
           });
-          if (wallet) {
-            if (wallet.xpub || wallet.currentIndex || wallet.derivationPath) {
-              return ResponseHandler(422, "Invalid Extended Public Key");
+          if (xpubExist) {
+            return ResponseHandler(422, "Invalid Extended Public key");
+          } else {
+            const wallet = await models.Wallet.findOne({
+              where: { storeUuid: params.storeId },
+            });
+            if (wallet) {
+              if (wallet.xpub || wallet.currentIndex || wallet.derivationPath) {
+                console.log(wallet);
+                return ResponseHandler(401, "Invalid Extended Public Key");
+              } else {
+                const updateWallet = await models.Wallet.update(
+                  {
+                    xpub: body.xpub,
+                    currentIndex: 0,
+                    derivationPath: `0/`,
+                  },
+                  { where: { storeUuid: params.storeId } }
+                );
+                return ResponseHandler(
+                  201,
+                  "Bitcoin Watch Only Wallet Updated Successfully"
+                );
+              }
             } else {
-              const updateWallet = await models.Wallet.update(
-                {
-                  xpub: body.xpub,
-                  currentIndex: 0,
-                  derivationPath: `0/`,
-                },
-                { where: { storeUuid: params.storeId } }
-              );
+              const bitcoinWallet = await models.Wallet.create({
+                xpub: body.xpub,
+                currentIndex: 0,
+                derivationPath: `0/`,
+                storeUuid: params.storeId,
+              });
               return ResponseHandler(
                 201,
-                "Bitcoin Watch Only Wallet Updated Successfully"
+                "Bitcoin Watch Only Wallet Successfully Created"
               );
             }
-          } else {
-            const bitcoinWallet = await models.Wallet.create({
-              xpub: body.xpub,
-              currentIndex: 0,
-              derivationPath: `0/`,
-              storeUuid: params.storeId,
-            });
-            return ResponseHandler(
-              201,
-              "Bitcoin Watch Only Wallet Successfully Created",
-              bitcoinWallet
-            );
           }
+        } else {
+          return ResponseHandler(401, "Unauthorized User");
         }
       } else {
         return ResponseHandler(401, "Invalid User");
@@ -87,31 +97,35 @@ export const CreateLighningWallet = async (
         where: { uuid: params.storeId },
       });
       if (storeExist) {
-        const userWallet = await models.Wallet.findOne({
-          where: { storeUuid: params.storeId },
-        });
-        if (userWallet) {
-          if (!userWallet.macaroon) {
-            const updateWallet = await models.Wallet.update(
-              { macaroon: body.macaroon },
-              { where: { storeUuid: params.storeId } }
-            );
+        if (storeExist.userId === body.user.id) {
+          const userWallet = await models.Wallet.findOne({
+            where: { storeUuid: params.storeId },
+          });
+          if (userWallet) {
+            if (!userWallet.macaroon) {
+              const updateWallet = await models.Wallet.update(
+                { macaroon: body.macaroon },
+                { where: { storeUuid: params.storeId } }
+              );
+              return ResponseHandler(
+                210,
+                "Lightning Watch Only Wallet Created Successfully"
+              );
+            } else {
+              return ResponseHandler(422, "Invalid Macaroon");
+            }
+          } else {
+            const lightningWallet = await models.Wallet.create({
+              macaroon: body.macaroon,
+              storeUuid: params.storeId,
+            });
             return ResponseHandler(
-              210,
+              201,
               "Lightning Watch Only Wallet Created Successfully"
             );
-          } else {
-            return ResponseHandler(422, "Invalid Macaroon");
           }
         } else {
-          const lightningWallet = await models.Wallet.create({
-            macaroon: body.macaroon,
-            storeUuid: params.storeId,
-          });
-          return ResponseHandler(
-            201,
-            "Lightning Watch Only Wallet Created Successfully"
-          );
+          return ResponseHandler(401, "Unauthorized User");
         }
       } else {
         return ResponseHandler(401, "Invalid User");
