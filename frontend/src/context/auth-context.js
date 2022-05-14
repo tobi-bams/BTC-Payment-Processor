@@ -6,8 +6,8 @@ const AuthContext = React.createContext({
     token: '',
     isLoggedIn: false,
     login: (token) => { },
-    logout: () => { }
-
+    logout: () => { },
+    currentUser: {}
 });
 
 const calculateRemainingTime = (expirationTime) => {
@@ -55,15 +55,36 @@ export const AuthContextProvider = (props) => {
         setToken(null);
         localStorage.removeItem('token');
         localStorage.removeItem('expirationTime');
+        // remove stored user json too
+        localStorage.removeItem('user');
         if (logoutTimer) {
             clearTimeout(logoutTimer)
         }
     }, []);
 
+    const storeUserData = (token) => {
+        return fetch('http://127.0.0.1:5000/auth/session', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then((res) => res.json()).then(
+            data => {
+                // store user object in local storage
+                localStorage.setItem('user', JSON.stringify(data));
+            }
+        );
+
+    }
+
     const loginHandler = (token, expirationTime) => {
         setToken(token);
         localStorage.setItem('token', token);
         localStorage.setItem('expirationTime', expirationTime);
+
+        // store currentUser in storage
+        storeUserData(token);
 
         const remainingTime = calculateRemainingTime(expirationTime);
         // logout user after expiration time. 
@@ -77,11 +98,14 @@ export const AuthContextProvider = (props) => {
         }
     }, [tokenData, logoutHandler]);
 
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+
     const contextValue = {
         token: token,
         isLoggedIn: userIsLoggedIn,
         login: loginHandler,
-        logout: logoutHandler
+        logout: logoutHandler,
+        currentUser: currentUser
     };
 
     return <AuthContext.Provider value={contextValue}>
