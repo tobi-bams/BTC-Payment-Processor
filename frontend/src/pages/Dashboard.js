@@ -9,11 +9,11 @@ import {
 function Dashboard() {
     return (
         <>
-            <div className="mb-12">
+            <div className="mb-12 mt-4">
                 <h2 className="text-3xl font-bold mb-4">Overview</h2>
                 <div className="flex flex-wrap justify-between">
                     <StatCard
-                        title="Total Products"
+                        title="Total Invoices"
                         stat={24}
                         link="/"
                         icon={<FontAwesomeIcon icon={faBoxArchive} />}
@@ -39,7 +39,7 @@ function Dashboard() {
                 </div>
             </div>
 
-            <div className="mb-12">
+            <div className="mb-10">
                 <h2 className="text-3xl font-bold mb-4">Recent Transactions</h2>
 
             </div>

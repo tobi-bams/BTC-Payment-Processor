@@ -5,7 +5,7 @@ import {
     faLock
 } from "@fortawesome/free-solid-svg-icons"
 import Button from "../components/ui/Button";
-import AuthContext from "../store/auth-context";
+import AuthContext from "../context/auth-context";
 
 function NavBar() {
 

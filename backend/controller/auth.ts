@@ -11,6 +11,7 @@ interface User {
 }
 
 interface SessionUser {
+  id: string, // added id to session info
   email: string;
   role: string;
   store: {
@@ -95,6 +96,7 @@ export const Session = async (user: User) => {
       include: models.Store,
     });
     let currentUser: SessionUser = {
+      id: userRecord.id,
       email: userRecord.email,
       role: userRecord.role,
       store: null,
