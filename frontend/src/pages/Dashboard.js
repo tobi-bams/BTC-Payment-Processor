@@ -6,11 +6,22 @@ import {
     faMoneyBillTransfer
 } from "@fortawesome/free-solid-svg-icons"
 
+
+
 function Dashboard() {
+
+    const currentUser = JSON.parse(localStorage.getItem('user')) || [];
+
+    const userHasStore = currentUser.data.store;
+
     return (
         <>
-            <div className="mb-12 mt-4">
-                <h2 className="text-3xl font-bold mb-4">Overview</h2>
+            <div className="mb-10">
+                {userHasStore ? (
+                    <h2 className="text-3xl text-dark font-bold mb-4">{userHasStore.name} Overview</h2>
+                ) : (
+                    <h2 className="text-3xl text-dark font-bold mb-4">Overview</h2>
+                )}
                 <div className="flex flex-wrap justify-between">
                     <StatCard
                         title="Total Invoices"
@@ -37,6 +48,11 @@ function Dashboard() {
                         className="mb-6 xl:mb-0"
                     />
                 </div>
+            </div>
+
+            <div className="mb-10">
+                <h2 className="text-3xl font-bold mb-4">Recent Invoices</h2>
+
             </div>
 
             <div className="mb-10">

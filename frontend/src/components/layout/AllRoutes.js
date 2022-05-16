@@ -1,16 +1,16 @@
 import { useContext } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AllInvoicesPage from '../../pages/AllInvoices';
-import AllTransactionsPage from '../../pages/AllTransactions';
 import AuthPage from '../../pages/AuthPage';
 import CreateStorePage from '../../pages/CreateStore';
 import Dashboard from '../../pages/Dashboard';
-import HomePage from '../../pages/HomePage';
 import NewInvoicePage from '../../pages/NewInvoice';
 import AuthContext from '../../context/auth-context';
 import AuthLayout from './AuthLayout';
 import DashboardIndexLayout from './DashboardIndexLayout';
-import DefaultLayout from './DefaultLayout';
+import WalletPage from '../../pages/WalletPage';
+import GettingStartedPage from '../../pages/GettingStarted';
+import CreateBitcoinWalletPage from '../../pages/CreateBitcoinWallet';
 // import layouts
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -29,11 +29,17 @@ function AllRoutes() {
 
     return (
         <Switch>
-            <AppRoute exact path="/" layout={DefaultLayout} component={HomePage} />
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/"
+                    path="/dashboard/getting-started"
+                    layout={DashboardIndexLayout}
+                    component={GettingStartedPage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/overview"
                     layout={DashboardIndexLayout}
                     component={Dashboard}
                 />)}
@@ -43,6 +49,27 @@ function AllRoutes() {
                     path="/dashboard/create-store"
                     layout={DashboardIndexLayout}
                     component={CreateStorePage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/wallet"
+                    layout={DashboardIndexLayout}
+                    component={WalletPage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/wallets/bitcoin"
+                    layout={DashboardIndexLayout}
+                    component={CreateBitcoinWalletPage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/lightning"
+                    layout={DashboardIndexLayout}
+                    component={WalletPage}
                 />)}
             {authCtx.isLoggedIn && (
                 <AppRoute
@@ -58,13 +85,6 @@ function AllRoutes() {
                     layout={DashboardIndexLayout}
                     component={NewInvoicePage}
                 />)}
-            {authCtx.isLoggedIn && (
-                <AppRoute
-                    exact
-                    path="/dashboard/transactions"
-                    layout={DashboardIndexLayout}
-                    component={AllTransactionsPage}
-                />)}
             {!authCtx.isLoggedIn && (
                 <AppRoute
                     exact
@@ -72,8 +92,11 @@ function AllRoutes() {
                     layout={AuthLayout}
                     component={AuthPage}
                 />)}
+            <AppRoute path="/">
+                <Redirect to="/auth" />
+            </AppRoute>
             <AppRoute path="*">
-                <Redirect to="/" />
+                <Redirect to="/auth" />
             </AppRoute>
         </Switch>
     );
