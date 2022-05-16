@@ -16,7 +16,7 @@ function CreateStoreForm(props) {
 
         const storeData = {
             name: enteredName,
-            userId: authCtx.currentUser.data.email
+            userId: authCtx.currentUser.data.id
         };
 
         props.onCreateStore(storeData);

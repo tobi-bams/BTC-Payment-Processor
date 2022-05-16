@@ -1,4 +1,4 @@
-import CreateStoreForm from "../components/store/CreateStoreForm";
+import CreateStoreForm from "../components/forms/CreateStoreForm";
 import { useHistory } from 'react-router-dom';
 
 function CreateStorePage() {

@@ -1,6 +1,8 @@
 function AllInvoicesPage() {
     return (
-        <h1>All Invoices</h1>
+        <>
+            <h2 className="text-3xl text-dark font-bold mb-4">All invoices</h2>
+        </>
     )
 }
 
