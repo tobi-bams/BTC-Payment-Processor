@@ -4,6 +4,7 @@ import cors from "cors";
 import Auth from "./routes/auth";
 import Store from "./routes/store";
 import Wallet from "./routes/wallet";
+import Invoice from "./routes/invoice";
 import dotenv from "dotenv";
 
 const app: Application = express();
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
 app.use("/auth", Auth);
 app.use("/store", Store);
 app.use("/wallet", Wallet);
+app.use("/invoice", Invoice);
 
 const PORT = process.env.PORT || 5000;
 

@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       lightning_invoice: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(5000),
         allowNull: false,
       },
       exchange_rate: {
@@ -57,6 +57,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       storeUuid: {
         type: DataTypes.UUID,
+        allowNull: false,
+      },
+      lightning_invoice_hash: {
+        type: DataTypes.STRING,
         allowNull: false,
       },
     },
