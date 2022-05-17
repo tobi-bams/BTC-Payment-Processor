@@ -4,6 +4,7 @@ import {
   CreateBitcoinWallet,
   CreateLighningWallet,
 } from "../controller/wallet";
+import { TestConnection } from "../utils/lightning";
 
 const route: Router = express.Router();
 
@@ -24,5 +25,13 @@ route.post(
     res.status(wallet.status).json(wallet.body);
   }
 );
+
+route.get("/light", async (req: Request, res: Response) => {
+  const server: any = process.env.LND_SERVER;
+  const cert: any = process.env.CERT;
+  const macaroon: any = process.env.MACAROON_HEX;
+  await TestConnection(server, cert, macaroon);
+  res.status(200).json({ message: "We are good" });
+});
 
 export default route;

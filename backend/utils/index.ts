@@ -1,3 +1,5 @@
+import axios from "axios";
+
 interface ResBody {
   message: string;
   data?: {};
@@ -23,4 +25,21 @@ export const ValidateXpubKey = (xpub: string) => {
 
 export const ValidateMacaroon = (macaroon: string) => {
   return true;
+};
+
+export const BtcExchangeValue = async () => {
+  try {
+    const amount = await axios.get(
+      "https://api-pub.bitfinex.com/v2/tickers?symbols=tBTCUSD"
+    );
+    return amount.data[0][7];
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const PriceConverter = (exchangeRage: number, price: number) => {
+  const btc = price / exchangeRage;
+  const sats = btc * 100000000;
+  return { btc, sats };
 };

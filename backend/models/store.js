@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       Store.belongsTo(models.User);
       Store.hasOne(models.Wallet, { foreignKey: "storeUuid" });
+      Store.hasMany(models.Invoice, { foreignKey: "storeUuid" });
     }
 
     toJSON() {
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.UUID,
         allowNull: false,
         defaultValue: UUIDV4,
+        primaryKey: true,
       },
       userId: {
         type: DataTypes.INTEGER,
