@@ -1,10 +1,13 @@
-import { useRef } from 'react';
+import React, { useContext } from 'react';
+import AuthContext from '../../context/auth-context';
 import Button from '../ui/Button';
 import FormGroup from '../ui/FormGroup';
-import InputGroup from '../ui/InputGroup';
 
 function CreateStoreForm(props) {
-    const nameInputRef = useRef();
+
+    const authCtx = useContext(AuthContext);
+
+    const nameInputRef = React.createRef();
 
     function submitHandler(event) {
         event.preventDefault();
@@ -13,6 +16,7 @@ function CreateStoreForm(props) {
 
         const storeData = {
             name: enteredName,
+            userId: authCtx.currentUser.data.id
         };
 
         props.onCreateStore(storeData);
@@ -22,7 +26,7 @@ function CreateStoreForm(props) {
         <>
             <form className="w-full mx-auto text-center" onSubmit={submitHandler}>
                 <FormGroup>
-                    <InputGroup type="text" name="name" placeholder="Name of your store" ref={nameInputRef} />
+                    <input className="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400" type="text" required id="name" ref={nameInputRef} placeholder="Name of your store" />
                 </FormGroup>
                 <FormGroup>
                     <Button text="Create my store" submit full />

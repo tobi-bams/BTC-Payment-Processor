@@ -1,16 +1,16 @@
 import { useContext } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import AllProductsPage from '../../pages/AllProducts';
-import AllTransactionsPage from '../../pages/AllTransactions';
+import AllInvoicesPage from '../../pages/AllInvoices';
 import AuthPage from '../../pages/AuthPage';
 import CreateStorePage from '../../pages/CreateStore';
 import Dashboard from '../../pages/Dashboard';
-import HomePage from '../../pages/HomePage';
-import NewProductPage from '../../pages/NewProduct';
-import AuthContext from '../../store/auth-context';
+import NewInvoicePage from '../../pages/NewInvoice';
+import AuthContext from '../../context/auth-context';
 import AuthLayout from './AuthLayout';
 import DashboardIndexLayout from './DashboardIndexLayout';
-import DefaultLayout from './DefaultLayout';
+import WalletPage from '../../pages/WalletPage';
+import GettingStartedPage from '../../pages/GettingStarted';
+import CreateBitcoinWalletPage from '../../pages/CreateBitcoinWallet';
 // import layouts
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -29,15 +29,17 @@ function AllRoutes() {
 
     return (
         <Switch>
-            {/* --------------------------- */}
-            {/* LANDING PAGES ROUTERS - START */}
-            {/* <AppRoute exact path="/" layout={DefaultLayout} component={ProductsIndex} /> */}
-            <AppRoute exact path="/" layout={DefaultLayout} component={HomePage} />
-
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/"
+                    path="/dashboard/getting-started"
+                    layout={DashboardIndexLayout}
+                    component={GettingStartedPage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/overview"
                     layout={DashboardIndexLayout}
                     component={Dashboard}
                 />)}
@@ -51,23 +53,37 @@ function AllRoutes() {
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/products"
+                    path="/dashboard/wallet"
                     layout={DashboardIndexLayout}
-                    component={AllProductsPage}
+                    component={WalletPage}
                 />)}
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/products/new"
+                    path="/dashboard/wallets/bitcoin"
                     layout={DashboardIndexLayout}
-                    component={NewProductPage}
+                    component={CreateBitcoinWalletPage}
                 />)}
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/transactions"
+                    path="/dashboard/lightning"
                     layout={DashboardIndexLayout}
-                    component={AllTransactionsPage}
+                    component={WalletPage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/invoices"
+                    layout={DashboardIndexLayout}
+                    component={AllInvoicesPage}
+                />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/invoices/new"
+                    layout={DashboardIndexLayout}
+                    component={NewInvoicePage}
                 />)}
             {!authCtx.isLoggedIn && (
                 <AppRoute
@@ -76,8 +92,11 @@ function AllRoutes() {
                     layout={AuthLayout}
                     component={AuthPage}
                 />)}
+            <AppRoute path="/">
+                <Redirect to="/auth" />
+            </AppRoute>
             <AppRoute path="*">
-                <Redirect to="/" />
+                <Redirect to="/auth" />
             </AppRoute>
         </Switch>
     );

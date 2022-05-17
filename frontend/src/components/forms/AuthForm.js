@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import AuthContext from "../../store/auth-context";
+import AuthContext from "../../context/auth-context";
 
 import Button from '../ui/Button';
 import FormGroup from '../ui/FormGroup';
@@ -60,8 +60,9 @@ const AuthForm = () => {
             const expirationTime = new Date(new Date().getTime() + (3600 * 1000)); // convert 1 hour to timestamp (milliseconds)
             // set timer to expire login token after 1 hour
             authCtx.login(data.data.token, expirationTime.toISOString());
-            // if login successful, redirect to dashboard.
-            history.replace("/dashboard");
+            // if login successful, redirect:
+            // - check if user has "gotten started: store done and wallets setup". if no, to getting started, if yes to /dashboard/overview
+            history.replace("/dashboard/getting-started");
         })
             .catch(err => {
                 alert(err.message);

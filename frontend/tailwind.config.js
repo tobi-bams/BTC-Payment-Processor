@@ -61,6 +61,23 @@ module.exports = {
       },
       transitionProperty: {
         width: "width"
+      },
+      colors: {
+        primary: '#4564BE',
+        secondary: '#59ACCC',
+        tertiary: '#252746',
+        dark: '#252746'
+      },
+      textColor: {
+        primary: '#4564BE',
+        secondary: '#59ACCC',
+        tertiary: '#252746',
+        dark: '#252746'
+      },
+      borderColor: {
+        primary: '#4564BE',
+        secondary: '#59ACCC',
+        tertiary: '#252746',
       }
     }
   },
