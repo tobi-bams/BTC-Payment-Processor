@@ -24,17 +24,30 @@ const CreateBitcoinWalletPage = () => {
         fetch("http://localhost:5000/wallet/create-bitcoin/" + userStore,
             {
                 method: 'POST',
-                body: JSON.stringify(xpub),
+                body: JSON.stringify({
+                    xpub: xpub
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userToken}`
                 }
-            }).then(() => {
+            }).then((res) => {
                 setIsLoading(false);
-                // @todo: update user json in storage: logging in is required first currently.
+                if (res.ok) {
+                    return res.json();
 
-                // if fetch promise fulfilled, navigate back to landing page
-                history.replace('/dashboard/wallets');
+                } else {
+                    return res.json().then(data => {
+                        let errorMsg = 'Failed to save xpub!';
+                        throw new Error(errorMsg);
+                    });
+                }
+            }).then(data => {
+                console.log(data);
+                history.replace("/dashboard/wallets");
+            })
+            .catch(err => {
+                alert(err.message);
             });
     }
 

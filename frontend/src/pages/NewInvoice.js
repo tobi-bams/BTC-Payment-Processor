@@ -1,8 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "../components/ui/Button";
 import FormGroup from "../components/ui/FormGroup";
-import AuthContext from "../context/auth-context";
 
 const NewInvoicePage = () => {
 
@@ -13,9 +12,7 @@ const NewInvoicePage = () => {
     const descriptionInputRef = React.createRef();
     const customerEmailInputRef = React.createRef();
 
-    const authCtx = useContext(AuthContext);
-
-    const userToken = authCtx.token;
+    const userToken = localStorage.getItem('token');
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -35,8 +32,8 @@ const NewInvoicePage = () => {
                 method: 'POST',
                 body: JSON.stringify({
                     amount: enteredAmount,
-                    orderId: enteredOrderId,
                     description: enteredDescription,
+                    orderId: enteredOrderId,
                     email: enteredCustomerEmail
                 }),
                 headers: {
@@ -47,6 +44,7 @@ const NewInvoicePage = () => {
                 setIsLoading(false);
                 if (res.ok) {
                     return res.json();
+
                 } else {
                     return res.json().then(data => {
                         let errorMsg = 'Invoice creation failed!';
