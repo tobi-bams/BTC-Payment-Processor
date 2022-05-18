@@ -11,12 +11,16 @@ interface User {
 }
 
 interface SessionUser {
-  id: string, // added id to session info
+  id: string; // added id to session info
   email: string;
   role: string;
   store: {
     name: string;
     id: string;
+    wallet: {
+      bitcoin: boolean;
+      lightning: boolean;
+    } | null;
   } | null;
 }
 
@@ -93,8 +97,9 @@ export const Session = async (user: User) => {
   try {
     const userRecord = await models.User.findOne({
       where: { id: user.id },
-      include: models.Store,
+      include: { model: models.Store, include: { model: models.Wallet } },
     });
+
     let currentUser: SessionUser = {
       id: userRecord.id,
       email: userRecord.email,
@@ -106,7 +111,14 @@ export const Session = async (user: User) => {
         currentUser.store = {
           name: userRecord.Stores[0].name,
           id: userRecord.Stores[0].uuid,
+          wallet: null,
         };
+        if (userRecord?.Stores[0].Wallet) {
+          currentUser.store.wallet = {
+            bitcoin: userRecord?.Stores[0].Wallet.xpub ? true : false,
+            lightning: userRecord?.Stores[0].Wallet.macaroon ? true : false,
+          };
+        }
       }
     }
     return ResponseHandler(200, "User details", currentUser);
