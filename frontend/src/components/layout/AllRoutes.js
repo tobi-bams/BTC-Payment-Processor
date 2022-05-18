@@ -8,9 +8,10 @@ import NewInvoicePage from '../../pages/NewInvoice';
 import AuthContext from '../../context/auth-context';
 import AuthLayout from './AuthLayout';
 import DashboardIndexLayout from './DashboardIndexLayout';
-import WalletPage from '../../pages/WalletPage';
+import WalletPage from '../../pages/CreateBitcoinWalletPage';
 import GettingStartedPage from '../../pages/GettingStarted';
-import CreateBitcoinWalletPage from '../../pages/CreateBitcoinWallet';
+import CreateBitcoinWalletPage from '../../pages/AllWallets';
+import AllWalletsPage from '../../pages/AllWallets';
 // import layouts
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -53,9 +54,9 @@ function AllRoutes() {
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/wallet"
+                    path="/dashboard/wallets/"
                     layout={DashboardIndexLayout}
-                    component={WalletPage}
+                    component={AllWalletsPage}
                 />)}
             {authCtx.isLoggedIn && (
                 <AppRoute
