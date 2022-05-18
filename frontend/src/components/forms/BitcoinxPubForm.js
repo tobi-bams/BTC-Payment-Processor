@@ -1,11 +1,8 @@
-import React, { useContext } from 'react';
-import AuthContext from '../../context/auth-context';
+import React from 'react';
 import Button from '../ui/Button';
 import FormGroup from '../ui/FormGroup';
 
-function BitcoinxPubForm(props) {
-
-    const authCtx = useContext(AuthContext);
+const BitcoinxPubForm = (props) => {
 
     const xPubInputRef = React.createRef();
 

@@ -10,7 +10,8 @@ import {
     faBitcoinSign,
     faBoltLightning,
     faFileInvoice,
-    faPlusCircle
+    faPlusCircle,
+    faCogs
 } from "@fortawesome/free-solid-svg-icons"
 import Avatar from "../components/ui/Avatar"
 import AuthContext from "../context/auth-context"
@@ -71,50 +72,55 @@ function SideNav() {
                 </div>
                 {userStore &&
                     <>
-                        <div className="mt-3">
-                            <Link className='flex justify-between border-b border-secondary no-underline w-full px-8 py-6 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/overview'>
-                                <div>
-                                    <FontAwesomeIcon icon={faHome} className="mr-4" /> Dashboard
-                                </div>
-                            </Link>
-                            <div className='no-underline border-b border-secondary w-full px-8 py-6 transition-colors duration-200 ease-in-out text-dark hover:text-secondary'>
-                                <FontAwesomeIcon icon={faWallet} className="mr-4" /> Wallets
-                                <ul>
-                                    <li>
-                                        <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
-                                            <div>
-                                                <FontAwesomeIcon icon={faBitcoinSign} className="mr-4" /> Bitcoin
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/lightning'>
-                                            <div>
-                                                <FontAwesomeIcon icon={faBoltLightning} className="mr-4" /> Lightning
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
+                        <Link className='flex justify-between border-b border-secondary no-underline w-full px-8 py-6 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/overview'>
+                            <div>
+                                <FontAwesomeIcon icon={faHome} className="mr-4" /> Dashboard
                             </div>
-                            <div className='no-underline w-full px-8 py-6 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/invoices'>
-                                <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> Invoices
-                                <ul>
-                                    <li>
-                                        <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
-                                            <div>
-                                                <FontAwesomeIcon icon={faPlusCircle} className="mr-4" /> New invoice
-                                            </div>
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
-                                            <div>
-                                                <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> All invoices
-                                            </div>
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
+                        </Link>
+                        <div className='no-underline border-b border-secondary w-full px-8 py-6 transition-colors duration-200 ease-in-out text-dark hover:text-secondary'>
+                            <FontAwesomeIcon icon={faWallet} className="mr-4" /> Wallets
+                            <ul>
+                                <li>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
+                                        <div>
+                                            <FontAwesomeIcon icon={faBitcoinSign} className="mr-4" /> Bitcoin
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/lightning'>
+                                        <div>
+                                            <FontAwesomeIcon icon={faBoltLightning} className="mr-4" /> Lightning
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/'>
+                                        <div>
+                                            <FontAwesomeIcon icon={faCogs} className="mr-4" /> Settings
+                                        </div>
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className='no-underline w-full px-8 py-6 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/invoices'>
+                            <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> Invoices
+                            <ul>
+                                <li>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
+                                        <div>
+                                            <FontAwesomeIcon icon={faPlusCircle} className="mr-4" /> New invoice
+                                        </div>
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
+                                        <div>
+                                            <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> All invoices
+                                        </div>
+                                    </Link>
+                                </li>
+                            </ul>
                         </div>
                     </>
                 }

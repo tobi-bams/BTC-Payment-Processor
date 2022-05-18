@@ -6,15 +6,15 @@ const InputGroup = React.forwardRef(({
     name = "",
     type = "text",
     placeholder = "",
-    error = false,
+    isValid = false,
+    isInvalid = false,
     errorText = "",
-    defaultValue = "",
     description = "",
     horizontal = false,
     onChange = () => { },
     ...newProps
 }, ref) => {
-    const hasError = error || errorText
+    const hasError = isInvalid || errorText
     const finalClass = `${className} w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400 ${hasError && `border-red-600`
         }`
     return (
@@ -34,7 +34,6 @@ const InputGroup = React.forwardRef(({
                     name={name}
                     className={finalClass}
                     placeholder={placeholder}
-                    defaultValue={defaultValue}
                     onChange={e => onChange(e.currentTarget.value)}
                     {...newProps}
                 />
