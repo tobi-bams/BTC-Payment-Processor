@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { getStatusColor } from "../helpers/utils";
 
 const InvoiceTable = (props) => {
 
@@ -21,13 +22,15 @@ const InvoiceTable = (props) => {
             <tbody>
                 {props.invoices.map((invoice) => (
                     <tr className={trClass} key={invoice.id}>
-                        <td className={tdClass}>{invoice.created_at}</td>
+                        <td className={tdClass}>{invoice.date}</td>
                         <td className={tdClass}>{invoice.order_id}</td>
                         <td className={tdClass}>{invoice.id}</td>
-                        <td className={tdClass}>{invoice.status}</td>
-                        <td className={tdClass}>{invoice.amount} (USD)</td>
                         <td className={tdClass}>
-                            <Link className="bg-secondary py-1 px-2 text-white" to={`/invoices/${invoice.id}`}>Details</Link>
+                            <span className={`rounded-sm py-1 px-2 text-xs font-medium text-black ${getStatusColor(invoice.status)}`}>{invoice.status}</span></td>
+                        <td className={tdClass}>{invoice.amount}.00 (USD)</td>
+                        <td className={tdClass}>
+                            <Link className="bg-secondary py-1 px-2 text-white mr-2" to={`/dashboard/invoices/${invoice.id}`}>Details</Link>
+                            <Link className="bg-primary py-1 px-2 text-white" to={`/dashboard/invoices/checkout/${invoice.id}`}>Checkout</Link>
                         </td>
                     </tr>
                 ))}

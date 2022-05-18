@@ -6,28 +6,31 @@ function AllInvoicesPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedInvoices, setLoadedInvoices] = useState([]);
 
+    const userToken = localStorage.getItem('token');
+
     useEffect(() => {
         setIsLoading(true);
-        // by default fetch is a GET request
-        fetch('http://localhost:5000/invoices/get/'
-        )
-            .then(response => {
-                return response.json();
-            })
+        fetch('http://localhost:5000/invoice/all', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${userToken}`
+            }
+        }).then(res => {
+            return res.json();
+        })
             .then(data => {
                 const invoices = [];
-
-                for (const key in data) {
+                for (const key in data.data) {
                     const invoice = {
                         // get the key
                         id: key,
                         // push the key into the object to form proper json
-                        ...data[key]
+                        ...data.data[key]
                     };
                     invoices.push(invoice);
+                    console.log("invoices: ", invoices);
                 }
-
-
                 setIsLoading(false);
                 setLoadedInvoices(invoices);
             });
