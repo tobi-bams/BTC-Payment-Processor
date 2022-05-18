@@ -119,3 +119,32 @@ export const CreateInvoice = async (body: any) => {
     return ResponseHandler(401, "You cannot create an invoice");
   }
 };
+
+export const GetInvoice = async (params: any) => {
+  try {
+    const invoice = await models.Invoice.findOne({
+      where: { uuid: params.id },
+    });
+    if (invoice) {
+      const responseInvoice = {
+        id: invoice.uuid,
+        amount: invoice.amount,
+        order_id: invoice.order_id,
+        description: invoice.description,
+        customer_email: invoice.customer_email,
+        btc_address: invoice.btc_address,
+        lightning_invoice: invoice.lightning_invoice,
+        exchange_rate: invoice.exchange_rate,
+        satoshi_paid: invoice.satoshi_paid,
+        status: invoice.status,
+        btc_amount: PriceConverter(invoice.exchange_rate, invoice.amount).btc,
+      };
+      return ResponseHandler(200, "Invoice details", responseInvoice);
+    } else {
+      return ResponseHandler(404, "Invoice  does not exist");
+    }
+  } catch (error) {
+    console.log(error);
+    return ResponseHandler(500, "Internal server error");
+  }
+};
