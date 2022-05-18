@@ -107,14 +107,14 @@ function SideNav() {
                             <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> Invoices
                             <ul>
                                 <li>
-                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/invoices/new'>
                                         <div>
                                             <FontAwesomeIcon icon={faPlusCircle} className="mr-4" /> New invoice
                                         </div>
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/wallets/bitcoin'>
+                                    <Link className='flex justify-between no-underline w-full px-8 py-2 transition-colors duration-200 ease-in-out text-dark hover:text-secondary' to='/dashboard/invoices'>
                                         <div>
                                             <FontAwesomeIcon icon={faFileInvoice} className="mr-4" /> All invoices
                                         </div>

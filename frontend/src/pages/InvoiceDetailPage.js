@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
-import InvoiceTable from "../elements/InvoiceTable";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-function AllInvoicesPage() {
+function InvoiceDetailsPage() {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [loadedInvoices, setLoadedInvoices] = useState([]);
+    const params = useParams();
+
+    const invoices = []
 
     useEffect(() => {
         setIsLoading(true);
@@ -26,27 +28,21 @@ function AllInvoicesPage() {
                     };
                     invoices.push(invoice);
                 }
-
-
                 setIsLoading(false);
-                setLoadedInvoices(invoices);
             });
     }, []);
 
-    if (isLoading) {
-        return (
-            <section>
-                <p>Loading...</p>
-            </section>
-        )
+    const invoice = invoices.find((invoice) => invoice.id === params.invoiceId);
+
+    if (!invoice) {
+        return <p>No invoice found</p>;
     }
 
     return (
         <>
-            <h2 className="text-3xl text-dark font-bold mb-4">All invoices</h2>
-            <InvoiceTable invoices={loadedInvoices} />
+            <h2 className="text-3xl text-dark font-bold mb-4">Invoice {invoice.id}</h2>
         </>
     )
 }
 
-export default AllInvoicesPage;
+export default InvoiceDetailsPage;

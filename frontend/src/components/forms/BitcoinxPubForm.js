@@ -25,7 +25,8 @@ const BitcoinxPubForm = (props) => {
                     <textarea className="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400" rows="3" required id="xpub" ref={xPubInputRef} placeholder="Enter xPub here" />
                 </FormGroup>
                 <FormGroup>
-                    <Button text="Submit" submit full />
+                    {!isLoading && <Button className="mb-2" type="primary" text="Save xPub" full submit></Button>}
+                    {isLoading && <div className="w-full px-6 py-3 rounded-sm border text-gray-800 bg-gray-200 border-gray-300" role="alert">Saving...</div>}
                 </FormGroup>
             </form>
         </>
