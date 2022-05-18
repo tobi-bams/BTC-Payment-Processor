@@ -148,3 +148,29 @@ export const GetInvoice = async (params: any) => {
     return ResponseHandler(500, "Internal server error");
   }
 };
+
+export const GetAllInvoice = async (body: any) => {
+  try {
+    const store = await models.Store.findOne({
+      where: { userId: body.user.id },
+    });
+    const invoices = await models.Invoice.findAll({
+      where: { storeUuid: store.uuid },
+    });
+    const responseInvoices: any = [];
+    invoices.forEach((invoice: any) => {
+      let newInvoice = {
+        id: invoice.uuid,
+        amount: invoice.amount,
+        status: invoice.status,
+        order_id: invoice.order_id,
+        data: invoice.createdAt,
+      };
+      responseInvoices.push(newInvoice);
+    });
+    return ResponseHandler(200, "All Invoices", responseInvoices);
+  } catch (error) {
+    console.log(error);
+    return ResponseHandler(500, "An error Occured");
+  }
+};
