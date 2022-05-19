@@ -12,6 +12,9 @@ import CreateBitcoinWalletPage from '../../pages/CreateBitcoinWalletPage';
 import GettingStartedPage from '../../pages/GettingStarted';
 import AllWalletsPage from '../../pages/AllWallets';
 import InvoiceDetailsPage from '../../pages/InvoiceDetailPage';
+import ConnectLightningPage from '../../pages/ConnectLightningNode';
+import DefaultLayout from './DefaultLayout';
+import CheckoutPage from '../../pages/CheckoutPage';
 // import layouts
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -70,7 +73,7 @@ function AllRoutes() {
                     exact
                     path="/dashboard/wallets/lightning"
                     layout={DashboardIndexLayout}
-                    component={AllWalletsPage}
+                    component={ConnectLightningPage}
                 />)}
             {authCtx.isLoggedIn && (
                 <AppRoute
@@ -93,6 +96,12 @@ function AllRoutes() {
                     layout={DashboardIndexLayout}
                     component={InvoiceDetailsPage}
                 />)}
+            <AppRoute
+                exact
+                path="/dashboard/invoices/checkout/:invoiceId"
+                layout={DefaultLayout}
+                component={CheckoutPage}
+            />
             {!authCtx.isLoggedIn && (
                 <AppRoute
                     exact

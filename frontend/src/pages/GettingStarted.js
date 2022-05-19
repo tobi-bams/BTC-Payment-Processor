@@ -1,20 +1,43 @@
 import Card from "../components/ui/Card"
 import { useContext, useState, useEffect } from "react"
 import AuthContext from "../context/auth-context";
+import { useHistory } from "react-router-dom";
 
 function GettingStartedPage() {
 
+    const history = useHistory()
+
     const authCtx = useContext(AuthContext)
+
+    const hasStore = !!authCtx.currentUser.data.store;
+    const hasBtcWallet = !!authCtx.currentUser.data.store.wallet.bitcoin
+    const hasLightning = !!authCtx.currentUser.data.store.wallet.lightning
+
+    if (hasStore && hasBtcWallet && hasLightning) {
+        history.replace("/dashboard/overview");
+    }
+
     const [userStore, setUserHasStore] = useState(false);
+    const [userWallet, setUserHasWallet] = useState(false);
+    const [userLightning, setUserHasLightning] = useState(false);
 
     useEffect(() => {
         // check for store in localstorage
         const checkStore = () => {
-            const userHasStore = !!authCtx.currentUser.data.store;
-            setUserHasStore(userHasStore);
+            setUserHasStore(hasStore);
+        };
+
+        const checkWallet = () => {
+            setUserHasWallet(hasBtcWallet);
+        };
+
+        const checkLightning = () => {
+            setUserHasLightning(hasLightning);
         };
 
         checkStore();
+        checkWallet();
+        checkLightning();
     });
 
     return (
@@ -31,30 +54,26 @@ function GettingStartedPage() {
                     />
                 </div>
             }
-            <div className="my-6">
-                <Card
-                    title="Connect your BTC wallet"
-                    text="Add your xPub key from which recieving addresses will be generated"
-                    buttonText="Add xPub key"
-                    buttonLink="/dashboard/wallets/bitcoin"
-                />
-            </div>
-            <div className="my-6">
-                <Card
-                    title="Connect to a lightning node"
-                    text="Configure BPP to communicate with your lnd node via REST proxy"
-                    buttonText="Connect lnd node"
-                    buttonLink="/dashboard/wallets/lightning"
-                />
-            </div>
-            <div className="my-3">
-                <Card
-                    title="Create Invoice"
-                    text="Create your first invoice and start getting paid"
-                    buttonText="Create invoice"
-                    buttonLink="/dashboard/invoices"
-                />
-            </div>
+            {!userWallet &&
+                <div className="my-6">
+                    <Card
+                        title="Connect your BTC wallet"
+                        text="Add your xPub key from which recieving addresses will be generated"
+                        buttonText="Add xPub key"
+                        buttonLink="/dashboard/wallets/bitcoin"
+                    />
+                </div>
+            }
+            {!userLightning &&
+                <div className="my-6">
+                    <Card
+                        title="Connect to a lightning node"
+                        text="Configure BPP to communicate with your lnd node via REST proxy"
+                        buttonText="Connect lnd node"
+                        buttonLink="/dashboard/wallets/lightning"
+                    />
+                </div>
+            }
         </div>
 
     )
