@@ -7,7 +7,9 @@ import { ExtPubKeyInput } from "../components/bitcoin/xpubInput";
 const DEFAULT_NETWORK = "mainnet"
 const NUMBER_OF_ADDRESSES = 10 // however many we need
 
-const WalletPage = () => {
+const CreateBitcoinWalletPage = () => {
+
+    const [isLoading, setIsLoading] = useState(false)
 
     const history = useHistory();
     const userToken = localStorage.getItem('token');
@@ -17,19 +19,35 @@ const WalletPage = () => {
     const userStore = currentUser.data.store.id;
 
     function xPubInputHandler(xpub) {
+        setIsLoading(true);
+
         fetch("http://localhost:5000/wallet/create-bitcoin/" + userStore,
             {
                 method: 'POST',
-                body: JSON.stringify(xpub),
+                body: JSON.stringify({
+                    xpub: xpub
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userToken}`
                 }
-            }).then(() => {
-                // @todo: update user json in storage: logging in is required first currently.
+            }).then((res) => {
+                setIsLoading(false);
+                if (res.ok) {
+                    return res.json();
 
-                // if fetch promise fulfilled, navigate back to landing page
-                history.replace('/dashboard/wallets');
+                } else {
+                    return res.json().then(data => {
+                        let errorMsg = 'Failed to save xpub!';
+                        throw new Error(errorMsg);
+                    });
+                }
+            }).then(data => {
+                console.log(data);
+                history.replace("/dashboard/wallets");
+            })
+            .catch(err => {
+                alert(err.message);
             });
     }
 
@@ -62,6 +80,7 @@ const WalletPage = () => {
                     onChange={handleExtPubKeyChange}
                     onEnteredXpub={xPubInputHandler}
                 />
+                {isLoading && <div className="w-full px-6 py-3 rounded-sm border text-gray-800 bg-gray-200 border-gray-300" role="alert">Setting up your BTC wallet...</div>}
             </div>
             <div className="mb-10">
                 <DerivedAddressesTable
@@ -75,4 +94,4 @@ const WalletPage = () => {
     )
 }
 
-export default WalletPage;
+export default CreateBitcoinWalletPage;

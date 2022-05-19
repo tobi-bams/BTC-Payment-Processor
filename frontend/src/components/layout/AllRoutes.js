@@ -8,10 +8,13 @@ import NewInvoicePage from '../../pages/NewInvoice';
 import AuthContext from '../../context/auth-context';
 import AuthLayout from './AuthLayout';
 import DashboardIndexLayout from './DashboardIndexLayout';
-import WalletPage from '../../pages/CreateBitcoinWalletPage';
+import CreateBitcoinWalletPage from '../../pages/CreateBitcoinWalletPage';
 import GettingStartedPage from '../../pages/GettingStarted';
-import CreateBitcoinWalletPage from '../../pages/AllWallets';
 import AllWalletsPage from '../../pages/AllWallets';
+import InvoiceDetailsPage from '../../pages/InvoiceDetailPage';
+import ConnectLightningPage from '../../pages/ConnectLightningNode';
+import DefaultLayout from './DefaultLayout';
+import CheckoutPage from '../../pages/CheckoutPage';
 // import layouts
 
 const AppRoute = ({ component: Component, layout: Layout, ...rest }) => (
@@ -68,9 +71,9 @@ function AllRoutes() {
             {authCtx.isLoggedIn && (
                 <AppRoute
                     exact
-                    path="/dashboard/lightning"
+                    path="/dashboard/wallets/lightning"
                     layout={DashboardIndexLayout}
-                    component={WalletPage}
+                    component={ConnectLightningPage}
                 />)}
             {authCtx.isLoggedIn && (
                 <AppRoute
@@ -86,6 +89,19 @@ function AllRoutes() {
                     layout={DashboardIndexLayout}
                     component={NewInvoicePage}
                 />)}
+            {authCtx.isLoggedIn && (
+                <AppRoute
+                    exact
+                    path="/dashboard/invoices/:invoiceId"
+                    layout={DashboardIndexLayout}
+                    component={InvoiceDetailsPage}
+                />)}
+            <AppRoute
+                exact
+                path="/dashboard/invoices/checkout/:invoiceId"
+                layout={DefaultLayout}
+                component={CheckoutPage}
+            />
             {!authCtx.isLoggedIn && (
                 <AppRoute
                     exact

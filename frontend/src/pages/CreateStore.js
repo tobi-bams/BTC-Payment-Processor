@@ -19,7 +19,7 @@ function CreateStorePage() {
                 // @todo: update user json in storage: logging in is required first currently.
 
                 // if fetch promise fulfilled, navigate back to landing page
-                history.replace('/dashboard');
+                history.replace('/dashboard/overview');
             });
     }
 

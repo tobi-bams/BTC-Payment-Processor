@@ -294,7 +294,7 @@ export const GetAllInvoice = async (body: any) => {
         amount: invoice.amount,
         status: invoice.status,
         order_id: invoice.order_id,
-        data: invoice.createdAt,
+        date: invoice.createdAt, // changed this to date, Tobi. 
       };
       responseInvoices.push(newInvoice);
     });
