@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       satoshi_paid: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DECIMAL(9, 8),
         allowNull: false,
       },
       status: {

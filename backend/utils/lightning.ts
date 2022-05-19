@@ -40,6 +40,22 @@ export const GenerateInvoice = async (
     } catch (error) {
       throw error;
     }
-  } else {
+  }
+};
+
+export const LookupInvoice = async (
+  server: string,
+  cert: string,
+  macaroon: string,
+  hash: string
+) => {
+  const rpc = await TestConnection(server, cert, macaroon);
+  if (rpc) {
+    try {
+      const invoice = rpc.lookupInvoice({ rHash: hash });
+      return invoice;
+    } catch (error) {
+      console.log(error);
+    }
   }
 };
