@@ -1,9 +1,12 @@
+import { response } from "express";
+import { date } from "joi";
 import { ResponseHandler } from "../utils";
 const joi = require("joi");
 const models = require("../models");
 import { BtcExchangeValue, PriceConverter } from "../utils";
 import { deriveBitcoinAddress } from "../utils/bitcoinAddressDeriavation";
-import { GenerateInvoice } from "../utils/lightning";
+import { GenerateInvoice, LookupInvoice } from "../utils/lightning";
+import { BitcoinAddressChecker } from "../utils/electrs_provider";
 
 /**
  * Invoice Schema
@@ -69,7 +72,7 @@ export const CreateInvoice = async (body: any) => {
           const invoice = await models.Invoice.create(
             {
               amount: body.amount,
-              orderId: body.orderId,
+              order_id: body.orderId,
               description: body.description,
               status: "pending",
               btc_address: btcAddress,
@@ -121,6 +124,9 @@ export const CreateInvoice = async (body: any) => {
 };
 
 export const GetInvoice = async (params: any) => {
+  const server: any = process.env.LND_SERVER;
+  const cert: any = process.env.CERT;
+  const macaroon: any = process.env.MACAROON_HEX;
   try {
     const invoice = await models.Invoice.findOne({
       where: { uuid: params.id },
@@ -139,7 +145,131 @@ export const GetInvoice = async (params: any) => {
         status: invoice.status,
         btc_amount: PriceConverter(invoice.exchange_rate, invoice.amount).btc,
       };
-      return ResponseHandler(200, "Invoice details", responseInvoice);
+      if (invoice.status === "expired" || invoice.status === "paid") {
+        return ResponseHandler(200, "Invoice details", responseInvoice);
+      } else {
+        if (new Date(invoice.createdAt).getTime() + 3600000 < Date.now()) {
+          const updatedInvoice = await models.Invoice.update(
+            { status: "expired" },
+            { where: { uuid: invoice.uuid } }
+          );
+          if (updatedInvoice) {
+            const changedInvoice = await models.Invoice.findOne({
+              where: { uuid: invoice.uuid },
+            });
+            console.log(changedInvoice);
+            const updatedResponseInvoice = {
+              id: changedInvoice.uuid,
+              amount: changedInvoice.amount,
+              order_id: changedInvoice.order_id,
+              description: changedInvoice.description,
+              customer_email: changedInvoice.customer_email,
+              btc_address: changedInvoice.btc_address,
+              lightning_invoice: changedInvoice.lightning_invoice,
+              exchange_rate: changedInvoice.exchange_rate,
+              satoshi_paid: changedInvoice.satoshi_paid,
+              status: changedInvoice.status,
+              btc_amount: PriceConverter(
+                changedInvoice.exchange_rate,
+                changedInvoice.amount
+              ).btc,
+            };
+            return ResponseHandler(
+              200,
+              "Invoice Details",
+              updatedResponseInvoice
+            );
+          } else {
+            return ResponseHandler(500, "An error Occured");
+          }
+        } else {
+          const isLightningSettled = await LookupInvoice(
+            server,
+            cert,
+            macaroon,
+            invoice.lightning_invoice_hash
+          );
+          const address_details = await BitcoinAddressChecker(
+            invoice.btc_address
+          );
+          if (address_details.length === 0 && !isLightningSettled?.settled) {
+            return ResponseHandler(200, "Invoice details", responseInvoice);
+          } else {
+            if (isLightningSettled?.settled) {
+              try {
+                const updateSettledInvoice = await models.Invoice.update(
+                  { status: "paid" },
+                  { where: { uuid: invoice.uuid } }
+                );
+                const settledInvoice = await models.Invoice.findOne({
+                  where: { uuid: invoice.uuid },
+                });
+                const settledInvoiceResponse = {
+                  id: settledInvoice.uuid,
+                  amount: settledInvoice.amount,
+                  order_id: settledInvoice.order_id,
+                  description: settledInvoice.description,
+                  customer_email: settledInvoice.customer_email,
+                  btc_address: settledInvoice.btc_address,
+                  lightning_invoice: settledInvoice.lightning_invoice,
+                  exchange_rate: settledInvoice.exchange_rate,
+                  satoshi_paid: settledInvoice.satoshi_paid,
+                  status: settledInvoice.status,
+                  btc_amount: PriceConverter(
+                    settledInvoice.exchange_rate,
+                    settledInvoice.amount
+                  ).btc,
+                };
+                return ResponseHandler(
+                  200,
+                  "Invoice Details",
+                  settledInvoiceResponse
+                );
+              } catch (error) {
+                console.log(error);
+                return ResponseHandler(500, "Internal server error");
+              }
+            } else {
+              try {
+                const updateSettledInvoice = await models.Invoice.update(
+                  {
+                    status: "paid",
+                    satoshi_paid: address_details[0].value / 100000000,
+                  },
+                  { where: { uuid: invoice.uuid } }
+                );
+                const settledInvoice = await models.Invoice.findOne({
+                  where: { uuid: invoice.uuid },
+                });
+                const settledInvoiceResponse = {
+                  id: settledInvoice.uuid,
+                  amount: settledInvoice.amount,
+                  order_id: settledInvoice.order_id,
+                  description: settledInvoice.description,
+                  customer_email: settledInvoice.customer_email,
+                  btc_address: settledInvoice.btc_address,
+                  lightning_invoice: settledInvoice.lightning_invoice,
+                  exchange_rate: settledInvoice.exchange_rate,
+                  satoshi_paid: settledInvoice.satoshi_paid,
+                  status: settledInvoice.status,
+                  btc_amount: PriceConverter(
+                    settledInvoice.exchange_rate,
+                    settledInvoice.amount
+                  ).btc,
+                };
+                return ResponseHandler(
+                  200,
+                  "Invoice Details",
+                  settledInvoiceResponse
+                );
+              } catch (error) {
+                console.log(error);
+                return ResponseHandler(500, "Internal Server error");
+              }
+            }
+          }
+        }
+      }
     } else {
       return ResponseHandler(404, "Invoice  does not exist");
     }
