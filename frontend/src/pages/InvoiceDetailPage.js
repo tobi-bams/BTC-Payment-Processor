@@ -35,14 +35,21 @@ function InvoiceDetailsPage(props) {
 
     const balanceofSatoshi = invoiceData.btc_amount - invoiceData.satoshi_paid; // calculated from backend
 
+    if (isLoading) {
+        return (
+            <section>
+                <p>Loading...</p>
+            </section>
+        )
+    }
+
     return (
         <>
             <h2 className="text-3xl text-dark font-bold mb-4">Invoice {invoiceData.id}</h2>
             <div className="border border-gray-300 rounded-sm p-4 mt-8">
                 <div className="border-b border-gray-300">
                     <div className="flex justify-between items-center">
-                        <span className="text-gray-600 font-medium text-lg">Invoice summary</span
-                        ><a href="#" className="text-blue-400 underline">Edit</a>
+                        <span className="text-gray-600 font-medium text-lg">Invoice summary</span>
                     </div>
                     <div className="mt-4">
                         <div className="mb-2 flex justify-between items-center">

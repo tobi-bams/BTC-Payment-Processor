@@ -18,6 +18,8 @@
     "@types/react-dom": "^18.0.3",
     "@types/react-router-dom": "^5.3.3",
     "@types/react-transition-group": "^4.4.4",
+    "bip21": "^2.0.3",
+    "kjua": "^0.9.0",
     "postcss-cli": "^9.1.0",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
