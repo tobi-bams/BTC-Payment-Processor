@@ -196,7 +196,11 @@ export const GetInvoice = async (params: any) => {
             if (isLightningSettled?.settled) {
               try {
                 const updateSettledInvoice = await models.Invoice.update(
-                  { status: "paid" },
+                  {
+                    status: "paid",
+                    satoshi_paid:
+                      parseInt(isLightningSettled?.value!) / 100000000,
+                  },
                   { where: { uuid: invoice.uuid } }
                 );
                 const settledInvoice = await models.Invoice.findOne({

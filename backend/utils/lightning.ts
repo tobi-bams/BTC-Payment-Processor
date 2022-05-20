@@ -48,7 +48,7 @@ export const LookupInvoice = async (
   const rpc = await TestConnection(server, cert, macaroon);
   if (rpc) {
     try {
-      const invoice = rpc.lookupInvoice({ rHash: hash });
+      const invoice = await rpc.lookupInvoice({ rHash: hash });
       return invoice;
     } catch (error) {
       console.log(error);
