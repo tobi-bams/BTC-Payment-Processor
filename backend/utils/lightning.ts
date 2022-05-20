@@ -32,10 +32,6 @@ export const GenerateInvoice = async (
         value: value.toString(),
         memo: description,
       });
-      const checker = await rpc.lookupInvoice({
-        rHash: (invoice.rHash as Buffer).toString("base64"),
-      });
-      console.log(checker);
       return invoice;
     } catch (error) {
       throw error;
@@ -52,7 +48,7 @@ export const LookupInvoice = async (
   const rpc = await TestConnection(server, cert, macaroon);
   if (rpc) {
     try {
-      const invoice = rpc.lookupInvoice({ rHash: hash });
+      const invoice = await rpc.lookupInvoice({ rHash: hash });
       return invoice;
     } catch (error) {
       console.log(error);

@@ -40,6 +40,6 @@ export const BtcExchangeValue = async () => {
 
 export const PriceConverter = (exchangeRage: number, price: number) => {
   const btc = parseFloat((price / exchangeRage).toFixed(8));
-  const sats = btc * 100000000;
+  const sats = Number(btc * 100000000);
   return { btc, sats };
 };

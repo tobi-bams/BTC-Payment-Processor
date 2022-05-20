@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false,
       },
       exchange_rate: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE(13, 8),
         allowNull: false,
       },
       satoshi_paid: {
