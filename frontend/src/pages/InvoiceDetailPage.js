@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import FormGroup from "../components/ui/FormGroup";
+import { getStatusColor } from "../helpers/utils";
 
 function InvoiceDetailsPage(props) {
 
@@ -45,6 +46,7 @@ function InvoiceDetailsPage(props) {
 
     return (
         <>
+            <span className={`rounded-sm py-1 px-2 text-xs font-medium ${getStatusColor(invoiceData.status)}`}>{invoiceData.status}</span>
             <h2 className="text-3xl text-dark font-bold mb-4">Invoice {invoiceData.id}</h2>
             <div className="border border-gray-300 rounded-sm p-4 mt-8">
                 <div className="border-b border-gray-300">
@@ -53,12 +55,16 @@ function InvoiceDetailsPage(props) {
                     </div>
                     <div className="mt-4">
                         <div className="mb-2 flex justify-between items-center">
+                            <span>Order ID</span>
+                            <span className="text-lg font-medium">{invoiceData.order_id}</span>
+                        </div>
+                        <div className="mb-2 flex justify-between items-center">
                             <span>Total Fiat Amount Due</span>
                             <span className="text-lg font-medium">${invoiceData.amount}.00</span>
                         </div>
                         <div className="mb-2 flex justify-between items-center">
-                            <span>Order Id</span>
-                            <span className="text-lg font-medium">{invoiceData.order_id}</span>
+                            <span>Amount Due (BTC)</span>
+                            <span className="text-lg font-medium">{invoiceData.btc_amount} BTC</span>
                         </div>
                         <div className="mb-2 flex justify-between items-center">
                             <span>Date Created</span>
@@ -69,7 +75,7 @@ function InvoiceDetailsPage(props) {
                 </div>
                 <div className="pt-4">
                     <div className="flex justify-between items-center">
-                        <span className="text-gray-600 font-medium text-lg">Product details</span>
+                        <span className="text-gray-600 font-medium text-lg">Customer information</span>
                     </div>
                     <div className="mt-4">
                         <div className="mb-2 flex justify-between items-center">
@@ -78,10 +84,6 @@ function InvoiceDetailsPage(props) {
                         <div className="mb-2 flex justify-between items-center">
                             <span>Customer email</span
                             ><span className="font-normal">{invoiceData.customer_email}</span>
-                        </div>
-                        <div className="mb-2 flex justify-between items-center">
-                            <span>Store</span>
-                            <span className="text-lg font-medium">{userStore}</span>
                         </div>
                     </div>
                 </div>

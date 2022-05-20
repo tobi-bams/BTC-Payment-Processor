@@ -3,14 +3,14 @@ import { useParams } from "react-router-dom";
 import CheckoutBox from "../elements/CheckoutBox";
 
 const bip21 = require("bip21");
-
 const kjua = require("kjua");
+const Swal = require('sweetalert2')
 
 const CheckoutPage = () => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [invoiceData, setInvoiceData] = useState([])
-    const [qrCode, setQrCode] = useState(false)
+    const [invoiceData, setInvoiceData] = useState([]);
+    const [invoiceStatus, setInvoiceStatus] = useState("pending");
 
     const params = useParams();
 
@@ -30,6 +30,12 @@ const CheckoutPage = () => {
         })
             .then(data => {
                 setInvoiceData(data.data);
+                // get invoice data
+                if (data.data.status == "expired") {
+                    setInvoiceStatus("expired");
+                } else if (data.data.status == "paid") {
+                    setInvoiceStatus("paid");
+                }
                 setIsLoading(false);
             });
     }, []);
@@ -64,8 +70,6 @@ const CheckoutPage = () => {
         rounded: 10
     })
 
-    console.log(bip21qrcode);
-
     if (isLoading) {
         return (
             <section>
@@ -84,13 +88,28 @@ const CheckoutPage = () => {
                     <span className="flex-1 text-center sm:text-left">{amount} BTC <span className="text-blue-800">(${fiat_amount}.00 USD)</span> </span>
                 </div>
             </div>
-            <div>
+            <div className="my-4">
                 {isLoading && (
                     <p>Loading...</p>
                 )}
-                {!isLoading && (
+                {!isLoading && invoiceStatus == "pending" && (
                     <CheckoutBox qrcode={bip21qrcode} lightning={lightningAddress} bitcoin={btcAddress} />
-
+                )}
+                {!isLoading && invoiceStatus == "expired" && (
+                    Swal.fire({
+                        title: 'Expired!',
+                        text: 'This invoice has expired',
+                        icon: 'error',
+                        confirmButtonText: 'Cool'
+                    })
+                )}
+                {!isLoading && invoiceStatus == "paid" && (
+                    Swal.fire({
+                        title: 'Paid!',
+                        text: 'This invoice has been paid',
+                        icon: 'success',
+                        confirmButtonText: 'Cool'
+                    })
                 )}
             </div>
         </div>

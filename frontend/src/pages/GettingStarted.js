@@ -9,9 +9,9 @@ function GettingStartedPage() {
 
     const authCtx = useContext(AuthContext)
 
-    const hasStore = !!authCtx.currentUser.data.store;
-    const hasBtcWallet = !!authCtx.currentUser.data.store.wallet.bitcoin
-    const hasLightning = !!authCtx.currentUser.data.store.wallet.lightning
+    const hasStore = !!authCtx.currentUser?.data?.store;
+    const hasBtcWallet = !!authCtx.currentUser?.data?.store?.wallet?.bitcoin
+    const hasLightning = !!authCtx.currentUser?.data?.store?.wallet?.lightning
 
     if (hasStore && hasBtcWallet && hasLightning) {
         history.replace("/dashboard/overview");

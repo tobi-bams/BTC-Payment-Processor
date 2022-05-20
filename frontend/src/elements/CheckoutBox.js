@@ -17,7 +17,7 @@ const CheckoutBox = (props) => {
                 <Button type="secondary" text="Open Wallet" full />
                 <h2 className="text-primary text-left border-t pt-4"><FontAwesomeIcon icon={faBitcoinSign} /> Bitcoin address</h2>
                 <div className="flex">
-                    <input className="w-full border border-gray-400 text-dark p-4 focus:outline-none" type="text" value={props.bitcoin} readOnly />
+                    <input className="w-full border border-gray-400 text-dark p-4 focus:outline-none" type="text" defaultValue={props.bitcoin} readOnly />
                     <span className="flex items-center justify-center border border-gray-400 border-l-0 py-2 px-4 text-gray-800">
                         <FontAwesomeIcon icon={faCopy} size="lg" />
                     </span>
@@ -27,7 +27,7 @@ const CheckoutBox = (props) => {
                 </div>
                 <h2 className="text-primary text-left border-t pt-4"><FontAwesomeIcon icon={faBoltLightning} /> Bolt 11 invoice</h2>
                 <div className="flex">
-                    <input className="w-full border border-gray-400 text-dark p-4 focus:outline-none" type="text" value={props.lightning} readOnly />
+                    <input className="w-full border border-gray-400 text-dark p-4 focus:outline-none" type="text" defaultValue={props.lightning} readOnly />
                     <span className="flex items-center justify-center border border-gray-400 border-l-0 py-2 px-4 text-gray-800">
                         <FontAwesomeIcon icon={faCopy} size="lg" />
                     </span>
