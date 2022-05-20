@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: UUIDV4,
       },
       amount: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE(7, 2),
         allowNull: false,
       },
       order_id: {
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       satoshi_paid: {
-        type: DataTypes.DECIMAL(9, 8),
+        type: DataTypes.DOUBLE(10, 8),
         allowNull: false,
       },
       status: {
