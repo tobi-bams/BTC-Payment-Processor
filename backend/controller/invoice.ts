@@ -52,8 +52,7 @@ export const CreateInvoice = async (body: any) => {
   if (store) {
     if (store.Wallet) {
       const exchangeValue = await BtcExchangeValue();
-      console.log(exchangeValue);
-      const bitcoin = PriceConverter(exchangeValue, 600);
+      const bitcoin = PriceConverter(exchangeValue, body.amount);
       if (store.Wallet.xpub && store.Wallet.macaroon) {
         const btcAddress = deriveBitcoinAddress(
           store.Wallet.xpub,
@@ -64,7 +63,7 @@ export const CreateInvoice = async (body: any) => {
           server,
           cert,
           macaroon,
-          bitcoin.btc,
+          bitcoin.sats,
           body.description
         );
         const t = await models.sequelize.transaction();
@@ -157,7 +156,6 @@ export const GetInvoice = async (params: any) => {
             const changedInvoice = await models.Invoice.findOne({
               where: { uuid: invoice.uuid },
             });
-            console.log(changedInvoice);
             const updatedResponseInvoice = {
               id: changedInvoice.uuid,
               amount: changedInvoice.amount,
@@ -294,7 +292,7 @@ export const GetAllInvoice = async (body: any) => {
         amount: invoice.amount,
         status: invoice.status,
         order_id: invoice.order_id,
-        date: invoice.createdAt, // changed this to date, Tobi. 
+        date: invoice.createdAt, // changed this to date, Tobi.
       };
       responseInvoices.push(newInvoice);
     });
