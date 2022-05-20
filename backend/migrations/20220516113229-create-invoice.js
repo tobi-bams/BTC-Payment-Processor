@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
       },
       amount: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE(7, 2),
         allowNull: false,
       },
       order_id: {
@@ -41,7 +41,7 @@ module.exports = {
         allowNull: false,
       },
       satoshi_paid: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DOUBLE(10, 8),
         allowNull: false,
       },
       status: {
