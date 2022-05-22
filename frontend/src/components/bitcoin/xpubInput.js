@@ -2,8 +2,12 @@ import React, { useMemo } from "react"
 import FormGroup from "../ui/FormGroup"
 import { isValidExtPubKey } from "@swan-bitcoin/xpub-lib"
 import Button from "../ui/Button"
+import { useHistory } from "react-router-dom"
 
 const ExtPubKeyInput = ({ onEnteredXpub, extPubKey, network, onChange }) => {
+
+  const history = useHistory();
+
   const isValid = useMemo(() => isValidExtPubKey(extPubKey, network), [
     extPubKey,
     network,
@@ -36,7 +40,10 @@ const ExtPubKeyInput = ({ onEnteredXpub, extPubKey, network, onChange }) => {
       <FormGroup>
         <Button text="Confirm and save" submit full />
       </FormGroup>
+
+      <Button text="Go back" type="link" size="sm" onClick={history.goBack} />
     </form>
+
   )
 }
 

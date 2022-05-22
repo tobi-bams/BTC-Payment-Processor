@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "../components/ui/Button";
 import FormGroup from "../components/ui/FormGroup";
@@ -15,9 +15,7 @@ const ConnectLightningPage = () => {
 
     const userToken = localStorage.getItem('token');
 
-    const currentUser = JSON.parse(localStorage.getItem('user')) || [];
-
-    const userStore = currentUser.data.store.id;
+    const userStore = JSON.parse(localStorage.getItem('storeData')) || [];
 
     function submitHandler(event) {
         event.preventDefault();
@@ -28,7 +26,7 @@ const ConnectLightningPage = () => {
 
         setIsLoading(true);
 
-        fetch("http://localhost:5000/wallet/create-lightning/" + userStore,
+        fetch("http://localhost:5000/wallet/create-lightning/" + userStore.data.uuid,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -81,6 +79,8 @@ const ConnectLightningPage = () => {
                         {isLoading && <div className="w-full px-6 py-3 rounded-sm border text-gray-800 bg-gray-200 border-gray-300" role="alert">Connecting...</div>}
                     </FormGroup>
                 </form>
+
+                <Button text="Go back" type="link" size="sm" onClick={history.goBack} />
             </div>
 
         </>

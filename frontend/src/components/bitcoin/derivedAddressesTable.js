@@ -6,7 +6,7 @@ const DerivedAddressesTable = ({ addressList, showCount, extPubKey }) => {
     <>
       <h2 className="text-xl font-bold">Confirm addresses</h2>
       <p className="text-gray-800 mb-6">Please check that your BTC wallet is generating similar addresses as below..</p>
-      <table className="fixed">
+      <table className="auto">
         <tbody>
           {addressList.map(({ path, address }, i) => {
             return (

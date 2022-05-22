@@ -7,7 +7,8 @@ const AuthContext = React.createContext({
     isLoggedIn: false,
     login: (token) => { },
     logout: () => { },
-    currentUser: {}
+    storeUser: (token) => { },
+    currentUser: {},
 });
 
 const calculateRemainingTime = (expirationTime) => {
@@ -57,6 +58,9 @@ export const AuthContextProvider = (props) => {
         localStorage.removeItem('expirationTime');
         // remove stored user json too
         localStorage.removeItem('user');
+        localStorage.removeItem('walletData');
+        localStorage.removeItem('storeData');
+        localStorage.removeItem('nodeStatus');
         if (logoutTimer) {
             clearTimeout(logoutTimer)
         }
@@ -105,6 +109,7 @@ export const AuthContextProvider = (props) => {
         isLoggedIn: userIsLoggedIn,
         login: loginHandler,
         logout: logoutHandler,
+        storeUser: storeUserData,
         currentUser: currentUser
     };
 

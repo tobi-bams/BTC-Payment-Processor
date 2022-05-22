@@ -1,6 +1,7 @@
 import SideNav from '../../elements/SideNav'
 
-function DashboardIndexLayout(props) {
+const DashboardIndexLayout = (props) => {
+
     return (
         <div className="flex">
             <SideNav />

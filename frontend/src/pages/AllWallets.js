@@ -1,12 +1,11 @@
 import { useContext, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
-    faCopy,
     faCheckCircle,
-    faQrcode
+    faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons"
 import AuthContext from "../context/auth-context"
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Button from "../components/ui/Button";
 
 function AllWalletsPage() {
@@ -18,8 +17,8 @@ function AllWalletsPage() {
 
     const authCtx = useContext(AuthContext)
 
-    const hasBtcWallet = !!authCtx.currentUser.data.store.wallet.bitcoin
-    const hasLightning = !!authCtx.currentUser.data.store.wallet.lightning
+    const hasBtcWallet = !!authCtx.currentUser?.data?.store?.wallet?.bitcoin
+    const hasLightning = !!authCtx.currentUser?.data?.store?.wallet?.lightning
 
     // check if lightning node is connected 
 
@@ -46,7 +45,7 @@ function AllWalletsPage() {
                 }
             }).then(data => {
                 console.log(data);
-                if (data.message == "We are good") {
+                if (data.message === "We are good") {
                     setNodeStatus(true);
                 }
                 history.replace("/dashboard/wallets");
@@ -57,7 +56,7 @@ function AllWalletsPage() {
     }
 
     let connectionStatus = "Offline";
-    if (nodeStatus == true) {
+    if (nodeStatus === true) {
         connectionStatus = "Connected"
     }
 
@@ -66,17 +65,25 @@ function AllWalletsPage() {
             <h1 className="text-3xl font-bold text-primary">Wallets Status</h1>
             <div className="mt-2 border-t border-gray-300">
                 <div className="px-4 py-6 flex flex-col sm:flex-row items-center justify-between cursor-pointer transition-colors duration-300 ease border-b border-gray-300 hover:bg-gray-200 no-underline">
-                    <div className="mt-2 text-center sm:text-left sm:mt-0 sm:ml-4 flex-1">
-                        <p className="font-medium">BTC Watch only wallet</p>
-                        {hasBtcWallet ? (
-                            <p className="">Active (xPub validated)</p>
-                        ) : (
-                            <p className="">Inactive</p>
-                        )
-
-                        }
-                    </div>
-                    <FontAwesomeIcon icon={faCheckCircle} size="xl" color="#9fba24" className="mr-4" />
+                    {hasBtcWallet ? (
+                        <>
+                            <div className="mt-2 text-center sm:text-left sm:mt-0 sm:ml-4 flex-1">
+                                <p className="font-medium">BTC Watch only wallet</p>
+                                <p className="">Active (xPub validated)</p>
+                            </div><FontAwesomeIcon icon={faCheckCircle} size="xl" color="#9fba24" className="mr-4" />
+                        </>
+                    ) : (
+                        <>
+                            <div className="mt-2 text-center sm:text-left sm:mt-0 sm:ml-4 flex-1">
+                                <p className="font-medium">BTC watch-only wallet</p>
+                                <p className="mb-4">Inactive (no xPub supplied)</p>
+                                <Link to="/dashboard/wallets/bitcoin">
+                                    <Button text="Add xPub" type="secondary" size="xs" />
+                                </Link>
+                            </div>
+                            <FontAwesomeIcon icon={faTimesCircle} size="xl" color="#ff0000" className="mr-4" />
+                        </>
+                    )}
                 </div>
                 <div className="px-4 py-6 flex flex-col sm:flex-row items-center justify-between cursor-pointer transition-colors duration-300 ease border-b border-gray-300 hover:bg-gray-200 no-underline">
                     <div className="mt-2 text-center sm:text-left sm:mt-0 sm:ml-4 flex-1">

@@ -113,7 +113,7 @@ function InvoiceDetailsPage(props) {
 
             <h2 className="text-gray-600 font-bold mt-6">BOLT 11 Lightning Invoice</h2>
             <FormGroup>
-                <textarea className="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400" rows="3" value={invoiceData.lightning_invoice} />
+                <textarea className="w-full border border-gray-300 rounded-sm px-4 py-3 outline-none transition-colors duration-150 ease-in-out focus:border-blue-400" rows="3" defaultValue={invoiceData.lightning_invoice} />
             </FormGroup>
 
 

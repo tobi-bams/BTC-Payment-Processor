@@ -1,10 +1,9 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { addressesFromExtPubKey, isValidExtPubKey } from "@swan-bitcoin/xpub-lib";
 import { DerivedAddressesTable } from "../components/bitcoin/derivedAddressesTable";
 import { ExtPubKeyInput } from "../components/bitcoin/xpubInput";
 
-const DEFAULT_NETWORK = "mainnet"
 const NUMBER_OF_ADDRESSES = 10 // however many we need
 
 const CreateBitcoinWalletPage = () => {
@@ -14,14 +13,22 @@ const CreateBitcoinWalletPage = () => {
     const history = useHistory();
     const userToken = localStorage.getItem('token');
 
-    const currentUser = JSON.parse(localStorage.getItem('user')) || [];
+    let store_id;
 
-    const userStore = currentUser.data.store.id;
+    const localStore = JSON.parse(localStorage.getItem('storeData'));
+
+    const currentUser = JSON.parse(localStorage.getItem('user'));
+
+    if (localStore) {
+        store_id = localStore.data.uuid;
+    } else if (currentUser.data.store) {
+        store_id = currentUser.data.store.id;
+    }
 
     function xPubInputHandler(xpub) {
         setIsLoading(true);
 
-        fetch("http://localhost:5000/wallet/create-bitcoin/" + userStore,
+        fetch("http://localhost:5000/wallet/create-bitcoin/" + store_id,
             {
                 method: 'POST',
                 body: JSON.stringify({
@@ -43,15 +50,15 @@ const CreateBitcoinWalletPage = () => {
                     });
                 }
             }).then(data => {
-                console.log(data);
-                history.replace("/dashboard/wallets");
+                localStorage.setItem('walletData', JSON.stringify(data));
+                history.replace("/dashboard/getting-started");
             })
             .catch(err => {
                 alert(err.message);
             });
     }
 
-    const [network, setNetwork] = useState(DEFAULT_NETWORK)
+    const network = "testnet"
     const [extPubKey, setExtPubKey] = useState("")
     const handleExtPubKeyChange = (e) => setExtPubKey(e.target.value)
 
