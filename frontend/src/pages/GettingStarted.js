@@ -71,10 +71,10 @@ function GettingStartedPage() {
       //   }
       if (currentUser?.data?.store) {
         setUserHasStore(true);
-        if (currentUser?.data?.store?.bitcoin) {
+        if (currentUser?.data?.store?.wallet?.bitcoin) {
           setUserHasWallet(true);
         }
-        if (currentUser?.data?.store?.lightning) {
+        if (currentUser?.data?.store?.wallet?.lightning) {
           setUserHasLightning(true);
         }
       }
