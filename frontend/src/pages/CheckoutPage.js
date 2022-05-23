@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import CheckoutBox from "../elements/CheckoutBox";
 
 const bip21 = require("bip21");
@@ -13,6 +13,8 @@ const CheckoutPage = () => {
     const [invoiceStatus, setInvoiceStatus] = useState("pending");
 
     const params = useParams();
+
+    const history = useHistory();
 
     const userToken = localStorage.getItem('token');
 
@@ -40,10 +42,6 @@ const CheckoutPage = () => {
             });
     }, []);
 
-    const currentUser = JSON.parse(localStorage.getItem('user')) || [];
-
-    const store = currentUser.data.store.name;
-
     const btcAddress = invoiceData.btc_address;
     const lightningAddress = invoiceData.lightning_invoice;
     const description = invoiceData.description;
@@ -53,8 +51,8 @@ const CheckoutPage = () => {
 
 
     const options = {
-        label: `Payment for ${description} at ${store}`,
-        message: `Payment for ${description} at ${store}`,
+        label: `Payment for ${description}`,
+        message: `Payment for ${description}`,
         amount: amount,
         lightning: lightningAddress,
     };
@@ -65,7 +63,8 @@ const CheckoutPage = () => {
         text: uri,
         render: "image",
         crisp: true,
-        size: 300,
+        size: 280,
+        back: "#f2f2f2",
         fill: "#252746",
         rounded: 10
     })
@@ -81,11 +80,9 @@ const CheckoutPage = () => {
     return (
         <div className="w-5/6 sm:w-2/3 md:w-1/3 my-12 py-6 px-6 shadow mx-auto bg-white rounded-sm">
             <div className="text-center">
-                <h2 className="text-3xl text-center text-primary">{store}</h2>
-                <small>Powered by Bitcoin Payment Processor</small>
-                <div className="flex flex-col sm:flex-row justify-between items-center mt-6 sm:items-start py-3 border-t border-b border-gray-300 last:border-none">
-                    <span className="w-full sm:w-2/3 font-medium text-center sm:text-left">{description}</span>
-                    <span className="flex-1 text-center sm:text-left">{amount} BTC <span className="text-blue-800">(${fiat_amount}.00 USD)</span> </span>
+                <div className="text-center py-3 border-b border-gray-300">
+                    <span className="w-full font-medium text-center">Payment for: {description}</span><br />
+                    <span className="text-center">{amount} BTC <span className="text-blue-800">(${fiat_amount}.00 USD)</span> </span>
                 </div>
             </div>
             <div className="my-4">
@@ -101,6 +98,8 @@ const CheckoutPage = () => {
                         text: 'This invoice has expired',
                         icon: 'error',
                         confirmButtonText: 'Cool'
+                    }).then(function () {
+                        window.location = "/dashboard/overview"; // assumes user is logged in
                     })
                 )}
                 {!isLoading && invoiceStatus == "paid" && (
@@ -109,10 +108,14 @@ const CheckoutPage = () => {
                         text: 'This invoice has been paid',
                         icon: 'success',
                         confirmButtonText: 'Cool'
+                    }).then(function () {
+                        window.location = "/dashboard/overview"; // assumes user is logged in
                     })
                 )}
             </div>
+            <p className="text-sm">Powered by Bitcoin Payment Processor</p>
         </div>
+
     )
 };
 

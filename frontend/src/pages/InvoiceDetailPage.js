@@ -2,6 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import FormGroup from "../components/ui/FormGroup";
 import { getStatusColor } from "../helpers/utils";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+    faExternalLinkAlt,
+} from "@fortawesome/free-solid-svg-icons"
 
 function InvoiceDetailsPage(props) {
 
@@ -47,7 +52,8 @@ function InvoiceDetailsPage(props) {
     return (
         <>
             <span className={`rounded-sm py-1 px-2 text-xs font-medium ${getStatusColor(invoiceData.status)}`}>{invoiceData.status}</span>
-            <h2 className="text-3xl text-dark font-bold mb-4">Invoice {invoiceData.id}</h2>
+            <h2 className="text-3xl text-primary font-bold mb-4">Invoice {invoiceData.id}</h2>
+            <Link target="_blank" className="bg-secondary py-1 px-2 text-white" to={`/dashboard/invoices/checkout/${invoiceData.id}`}>Go to checkout <FontAwesomeIcon size="xs" icon={faExternalLinkAlt} /></Link>
             <div className="border border-gray-300 rounded-sm p-4 mt-8">
                 <div className="border-b border-gray-300">
                     <div className="flex justify-between items-center">
@@ -89,7 +95,7 @@ function InvoiceDetailsPage(props) {
                 </div>
             </div>
 
-            <h2 className="text-3xl text-dark font-bold my-6">Invoice summary</h2>
+            <h2 className="text-3xl text-dark font-bold my-6">Payment methods</h2>
             <table className="w-full table-auto rounded-sm text-left">
                 <thead>
                     <tr>

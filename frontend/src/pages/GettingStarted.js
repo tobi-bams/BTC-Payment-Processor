@@ -120,7 +120,7 @@ function GettingStartedPage() {
             <div className="my-6">
               <Card
                 title="Connect to a lightning node"
-                text="Configure BPP to communicate with your lnd node via REST proxy"
+                text="Configure BPP to communicate with your Lightning node"
                 buttonText="Connect lnd node"
                 buttonLink="/dashboard/wallets/lightning"
               />
