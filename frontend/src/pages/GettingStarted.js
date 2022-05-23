@@ -15,9 +15,7 @@ function GettingStartedPage() {
 
   const userToken = localStorage.getItem("token");
 
-  const localStore = JSON.parse(localStorage.getItem("storeData"));
-
-  const currentUser = JSON.parse(localStorage.getItem("user"));
+  const currentUser = authCtx.currentUser;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -35,43 +33,50 @@ function GettingStartedPage() {
       }
     };
 
-    const checkLightning = () => {
-      fetch("http://localhost:5000/wallet/light", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            return res.json().then((data) => {
-              let errorMsg = "Failed to connect!";
-              throw new Error(errorMsg);
-            });
-          }
-        })
-        .then((data) => {
-          if (data.message === "We are good") {
-            setUserHasLightning(true);
-          }
-          localStorage.setItem("nodeStatus", "online");
-        })
-        .catch((err) => {
-          alert(err.message);
-        });
-    };
+    // const checkLightning = () => {
+    //   fetch("http://localhost:5000/wallet/light", {
+    //     headers: {
+    //       Authorization: `Bearer ${userToken}`,
+    //     },
+    //   })
+    //     .then((res) => {
+    //       if (res.ok) {
+    //         return res.json();
+    //       } else {
+    //         return res.json().then((data) => {
+    //           let errorMsg = "Failed to connect!";
+    //           throw new Error(errorMsg);
+    //         });
+    //       }
+    //     })
+    //     .then((data) => {
+    //       if (data.message === "We are good") {
+    //         setUserHasLightning(true);
+    //       }
+    //       localStorage.setItem("nodeStatus", "online");
+    //     })
+    //     .catch((err) => {
+    //       alert(err.message);
+    //     });
+    // };
     const checkStore = () => {
-      if (localStore) {
+      //   if (localStore) {
+      //     setUserHasStore(true);
+      //     checkWallet();
+      //     console.log("Happy");
+      //   } else if (currentUser?.data?.store !== null) {
+      //     console.log("appy");
+      //     setUserHasStore(true);
+      //     checkWallet();
+      //   }
+      if (currentUser?.data?.store) {
         setUserHasStore(true);
-        checkWallet();
-        checkLightning();
-        console.log("Happy");
-      } else if (currentUser?.data?.store !== null) {
-        console.log("Happy");
-        setUserHasStore(true);
-        checkWallet();
-        checkLightning();
+        if (currentUser?.data?.store?.bitcoin) {
+          setUserHasWallet(true);
+        }
+        if (currentUser?.data?.store?.lightning) {
+          setUserHasLightning(true);
+        }
       }
     };
 
@@ -80,12 +85,8 @@ function GettingStartedPage() {
     setIsLoading(false);
   });
 
-  if (!!userStore && !!userWallet && !!userLightning) {
-    completedOnboarding(true);
-
-    if (userOnboarding) {
-      history.replace("/dashboard/overview");
-    }
+  if (userStore && userWallet && userLightning) {
+    history.replace("/dashboard/overview");
   }
 
   return (
