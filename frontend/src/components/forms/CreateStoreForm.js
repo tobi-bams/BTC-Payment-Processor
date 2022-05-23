@@ -2,7 +2,6 @@ import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import Button from "../ui/Button";
 import FormGroup from "../ui/FormGroup";
-import axios from "axios";
 import AuthContext from "../../context/auth-context";
 const Swal = require("sweetalert2");
 
@@ -32,7 +31,6 @@ const CreateStoreForm = (props) => {
       },
     })
       .then((res) => {
-        setIsLoading(false);
         if (res.ok) {
           return res.json();
         } else {
@@ -50,17 +48,20 @@ const CreateStoreForm = (props) => {
             text: "Store Created Successfully",
             icon: "success",
             confirmButtonText: "Close",
+            timer: 5000,
           });
           setIsLoading(false);
           history.replace("/dashboard/getting-started");
         }, 2000);
       })
       .catch((err) => {
+        setIsLoading(false);
         Swal.fire({
           title: "Store",
           text: err.message,
           icon: "error",
           confirmButtonText: "Close",
+          timer: 5000,
         });
       });
   }

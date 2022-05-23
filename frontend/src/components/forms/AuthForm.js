@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import AuthContext from "../../context/auth-context";
+import Swal from "sweetalert2";
 
 import Button from "../ui/Button";
 import FormGroup from "../ui/FormGroup";
@@ -47,7 +48,6 @@ const AuthForm = () => {
       },
     })
       .then((res) => {
-        setIsLoading(false);
         if (res.ok) {
           return res.json();
         } else {
@@ -58,15 +58,41 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        const expirationTime = new Date(new Date().getTime() + 3600 * 1000); // convert 1 hour to timestamp (milliseconds)
-        // set timer to expire login token after 1 hour
-        authCtx.login(data.data.token, expirationTime.toISOString());
-        // if login successful, redirect:
-        // - check if user has "gotten started: store done and wallets setup". if no, to getting started, if yes to /dashboard/overview
-        history.replace("/dashboard/getting-started");
+        if (isLogin) {
+          const expirationTime = new Date(new Date().getTime() + 3600 * 1000); // convert 1 hour to timestamp (milliseconds)
+          // set timer to expire login token after 1 hour
+          authCtx.login(data.data.token, expirationTime.toISOString());
+          // if login successful, redirect:
+          // - check if user has "gotten started: store done and wallets setup". if no, to getting started, if yes to /dashboard/overview
+          Swal.fire({
+            title: "Authentication",
+            text: "User Logged in Successfully",
+            icon: "success",
+            confirmButtonText: "Close",
+            timer: 5000,
+          });
+          history.replace("/dashboard/getting-started");
+        } else {
+          Swal.fire({
+            title: "Authentication",
+            text: "User Created Successfully",
+            icon: "success",
+            confirmButtonText: "Close",
+            timer: 5000,
+          });
+          switchAuthModeHandler();
+        }
+        setIsLoading(false);
       })
       .catch((err) => {
-        alert(err.message);
+        Swal.fire({
+          title: "Authentication",
+          text: err.message,
+          icon: "error",
+          confirmButtonText: "Close",
+          timer: 5000,
+        });
+        setIsLoading(false);
       });
   }
 
