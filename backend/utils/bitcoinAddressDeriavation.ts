@@ -6,10 +6,7 @@ const bip32 = BIP32Factory(ecc);
 
 const PublicKey = (xpub: string, path: string) => {
   try {
-    const node = bip32.fromBase58(
-      "tpubDCzQCHCjoUGLiNo7fLL3HGxLMyTU8sxe1UiPmGNoRGxYkEuhh7AZMFgvdjWmug3VMw54xvVCrC69Jp5R55CowxxfvgGQJbdHFCpf7sCupVW",
-      networks.testnet
-    );
+    const node = bip32.fromBase58(xpub, networks.testnet);
     const child = node.derivePath(path);
     return child;
   } catch (error) {
