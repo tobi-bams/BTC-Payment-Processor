@@ -46,7 +46,6 @@ const CheckoutPage = () => {
   useEffect(() => {
     // by default fetch is a GET request
     let timer = setInterval(function () {
-      console.log("making call");
       if (invoiceStatus !== "paid" || invoiceStatus !== "expired") {
         fetch("http://localhost:5000/invoice/" + params?.invoiceId, {
           method: "GET",
