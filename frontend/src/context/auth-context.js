@@ -84,13 +84,13 @@ export const AuthContextProvider = (props) => {
       });
   };
 
-  const loginHandler = (token, expirationTime) => {
+  const loginHandler = async (token, expirationTime) => {
     setToken(token);
     localStorage.setItem("token", token);
     localStorage.setItem("expirationTime", expirationTime);
 
     // store currentUser in storage
-    storeUserData(token);
+    await storeUserData(token);
 
     const remainingTime = calculateRemainingTime(expirationTime);
     // logout user after expiration time.
