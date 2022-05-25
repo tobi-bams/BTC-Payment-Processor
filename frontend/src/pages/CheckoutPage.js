@@ -127,14 +127,9 @@ const CheckoutPage = () => {
       <div className="text-center">
         <h2 className="text-3xl text-center text-primary">{store}</h2>
         <small>Powered by Bitcoin Payment Processor</small>
-        <div className="flex flex-col sm:flex-row justify-between items-center mt-6 sm:items-start py-3 border-t border-b border-gray-300 last:border-none">
-          <span className="w-full sm:w-2/3 font-medium text-center sm:text-left">
-            {description}
-          </span>
-          <span className="flex-1 text-center sm:text-left">
-            {amount} BTC{" "}
-            <span className="text-blue-800">(${fiat_amount}.00 USD)</span>{" "}
-          </span>
+        <div className="py-3 border-b border-gray-300">
+          <span className="w-full text-center">Payment for: {description}</span> <br />
+          <span className="text-center">{amount} BTC <span className="text-blue-800">(${fiat_amount}.00 USD)</span>{" "}</span>
         </div>
       </div>
       <div className="my-4">
