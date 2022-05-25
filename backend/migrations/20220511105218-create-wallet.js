@@ -26,7 +26,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       macaroon: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(7000),
       },
       createdAt: {
         allowNull: false,

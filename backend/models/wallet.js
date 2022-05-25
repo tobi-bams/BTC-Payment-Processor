@@ -35,7 +35,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
       },
       macaroon: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(7000),
       },
     },
     {
