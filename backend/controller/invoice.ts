@@ -3,7 +3,7 @@ import { date } from "joi";
 import { ResponseHandler } from "../utils";
 const joi = require("joi");
 const models = require("../models");
-import { BtcExchangeValue, PriceConverter } from "../utils";
+import { BtcExchangeValue, PriceConverter, InvoiceDetails } from "../utils";
 import { deriveBitcoinAddress } from "../utils/bitcoinAddressDeriavation";
 import { GenerateInvoice, LookupInvoice } from "../utils/lightning";
 import { BitcoinAddressChecker } from "../utils/electrs_provider";
@@ -129,21 +129,10 @@ export const GetInvoice = async (params: any) => {
   try {
     const invoice = await models.Invoice.findOne({
       where: { uuid: params.id },
+      include: models.Store,
     });
     if (invoice) {
-      const responseInvoice = {
-        id: invoice.uuid,
-        amount: invoice.amount,
-        order_id: invoice.order_id,
-        description: invoice.description,
-        customer_email: invoice.customer_email,
-        btc_address: invoice.btc_address,
-        lightning_invoice: invoice.lightning_invoice,
-        exchange_rate: invoice.exchange_rate,
-        satoshi_paid: invoice.satoshi_paid,
-        status: invoice.status,
-        btc_amount: PriceConverter(invoice.exchange_rate, invoice.amount).btc,
-      };
+      const responseInvoice = InvoiceDetails(invoice);
       if (invoice.status === "expired" || invoice.status === "paid") {
         return ResponseHandler(200, "Invoice details", responseInvoice);
       } else {
@@ -155,23 +144,9 @@ export const GetInvoice = async (params: any) => {
           if (updatedInvoice) {
             const changedInvoice = await models.Invoice.findOne({
               where: { uuid: invoice.uuid },
+              include: models.Store,
             });
-            const updatedResponseInvoice = {
-              id: changedInvoice.uuid,
-              amount: changedInvoice.amount,
-              order_id: changedInvoice.order_id,
-              description: changedInvoice.description,
-              customer_email: changedInvoice.customer_email,
-              btc_address: changedInvoice.btc_address,
-              lightning_invoice: changedInvoice.lightning_invoice,
-              exchange_rate: changedInvoice.exchange_rate,
-              satoshi_paid: changedInvoice.satoshi_paid,
-              status: changedInvoice.status,
-              btc_amount: PriceConverter(
-                changedInvoice.exchange_rate,
-                changedInvoice.amount
-              ).btc,
-            };
+            const updatedResponseInvoice = InvoiceDetails(changedInvoice);
             return ResponseHandler(
               200,
               "Invoice Details",
@@ -205,23 +180,9 @@ export const GetInvoice = async (params: any) => {
                 );
                 const settledInvoice = await models.Invoice.findOne({
                   where: { uuid: invoice.uuid },
+                  include: models.Store,
                 });
-                const settledInvoiceResponse = {
-                  id: settledInvoice.uuid,
-                  amount: settledInvoice.amount,
-                  order_id: settledInvoice.order_id,
-                  description: settledInvoice.description,
-                  customer_email: settledInvoice.customer_email,
-                  btc_address: settledInvoice.btc_address,
-                  lightning_invoice: settledInvoice.lightning_invoice,
-                  exchange_rate: settledInvoice.exchange_rate,
-                  satoshi_paid: settledInvoice.satoshi_paid,
-                  status: settledInvoice.status,
-                  btc_amount: PriceConverter(
-                    settledInvoice.exchange_rate,
-                    settledInvoice.amount
-                  ).btc,
-                };
+                const settledInvoiceResponse = InvoiceDetails(settledInvoice);
                 return ResponseHandler(
                   200,
                   "Invoice Details",
@@ -242,23 +203,9 @@ export const GetInvoice = async (params: any) => {
                 );
                 const settledInvoice = await models.Invoice.findOne({
                   where: { uuid: invoice.uuid },
+                  include: models.Store,
                 });
-                const settledInvoiceResponse = {
-                  id: settledInvoice.uuid,
-                  amount: settledInvoice.amount,
-                  order_id: settledInvoice.order_id,
-                  description: settledInvoice.description,
-                  customer_email: settledInvoice.customer_email,
-                  btc_address: settledInvoice.btc_address,
-                  lightning_invoice: settledInvoice.lightning_invoice,
-                  exchange_rate: settledInvoice.exchange_rate,
-                  satoshi_paid: settledInvoice.satoshi_paid,
-                  status: settledInvoice.status,
-                  btc_amount: PriceConverter(
-                    settledInvoice.exchange_rate,
-                    settledInvoice.amount
-                  ).btc,
-                };
+                const settledInvoiceResponse = InvoiceDetails(settledInvoice);
                 return ResponseHandler(
                   200,
                   "Invoice Details",

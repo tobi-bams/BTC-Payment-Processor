@@ -43,3 +43,22 @@ export const PriceConverter = (exchangeRage: number, price: number) => {
   const sats = Number(btc * 100000000);
   return { btc, sats };
 };
+
+export const InvoiceDetails = (invoice: any) => {
+  const responseInvoice = {
+    id: invoice.uuid,
+    amount: invoice.amount,
+    order_id: invoice.order_id,
+    description: invoice.description,
+    customer_email: invoice.customer_email,
+    btc_address: invoice.btc_address,
+    lightning_invoice: invoice.lightning_invoice,
+    exchange_rate: invoice.exchange_rate,
+    satoshi_paid: invoice.satoshi_paid,
+    status: invoice.status,
+    store_name: invoice.Store.name,
+    btc_amount: PriceConverter(invoice.exchange_rate, invoice.amount).btc,
+    date: invoice.createdAt,
+  };
+  return responseInvoice;
+};
