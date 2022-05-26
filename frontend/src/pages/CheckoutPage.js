@@ -74,7 +74,7 @@ const CheckoutPage = () => {
             console.log(err.message);
           });
       }
-    }, 50000);
+    }, 30000);
 
     return () => {
       clearInterval(timer);
@@ -87,7 +87,7 @@ const CheckoutPage = () => {
   const orderId = invoiceData.order_id;
   const fiat_amount = invoiceData.amount;
   const amount = invoiceData.btc_amount;
-  const store = invoiceData.store_name
+  const store = invoiceData.store_name;
 
   const options = {
     label: `Payment for ${description} at ${store}`,
@@ -125,8 +125,12 @@ const CheckoutPage = () => {
         <h2 className="text-3xl text-center text-primary">{store}</h2>
         <small>Powered by Bitcoin Payment Processor</small>
         <div className="py-3 border-b border-gray-300">
-          <span className="w-full text-center">Payment for: {description}</span> <br />
-          <span className="text-center">{amount} BTC <span className="text-blue-800">(${fiat_amount}.00 USD)</span>{" "}</span>
+          <span className="w-full text-center">Payment for: {description}</span>{" "}
+          <br />
+          <span className="text-center">
+            {amount} BTC{" "}
+            <span className="text-blue-800">(${fiat_amount}.00 USD)</span>{" "}
+          </span>
         </div>
       </div>
       <div className="my-4">

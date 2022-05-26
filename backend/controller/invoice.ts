@@ -51,7 +51,8 @@ export const CreateInvoice = async (body: any) => {
   const macaroon: any = process.env.MACAROON_HEX;
   if (store) {
     if (store.Wallet) {
-      const exchangeValue = await BtcExchangeValue();
+      // const exchangeValue = await BtcExchangeValue();
+      const exchangeValue = 29383;
       const bitcoin = PriceConverter(exchangeValue, body.amount);
       if (store.Wallet.xpub && store.Wallet.macaroon) {
         const btcAddress = deriveBitcoinAddress(
