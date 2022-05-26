@@ -31,6 +31,7 @@ function InvoiceDetailsPage(props) {
         })
             .then(data => {
                 setInvoiceData(data.data);
+                console.log(data.data);
                 setIsLoading(false);
             });
     }, []);
@@ -39,7 +40,19 @@ function InvoiceDetailsPage(props) {
 
     const userStore = currentUser.data.store.name;
 
-    const balanceofSatoshi = invoiceData.btc_amount - invoiceData.satoshi_paid; // calculated from backend
+    const balanceofSatoshi = invoiceData.btc_amount;
+
+    const getDueAmount = () => {
+        let balanceofSatoshi = invoiceData.btc_amount;
+        if (invoiceData.satoshi_paid > 0) {
+            balanceofSatoshi = invoiceData.btc_amount - invoiceData.satoshi_paid;
+            if (balanceofSatoshi < 0) {
+                balanceofSatoshi = 0;
+            }
+        }
+        return balanceofSatoshi;
+    }
+
 
     if (isLoading) {
         return (
@@ -112,7 +125,7 @@ function InvoiceDetailsPage(props) {
                         <td>{invoiceData.btc_address}</td>
                         <td>${invoiceData.exchange_rate} (USD)</td>
                         <td>{invoiceData.satoshi_paid} BTC</td>
-                        <td>{balanceofSatoshi} BTC</td>
+                        <td>{getDueAmount()} BTC</td>
                     </tr>
                 </tbody>
             </table>

@@ -81,16 +81,13 @@ const CheckoutPage = () => {
     };
   }, [invoiceStatus]);
 
-  const currentUser = JSON.parse(localStorage.getItem("user")) || [];
-
-  const store = currentUser.data.store.name;
-
   const btcAddress = invoiceData.btc_address;
   const lightningAddress = invoiceData.lightning_invoice;
   const description = invoiceData.description;
   const orderId = invoiceData.order_id;
   const fiat_amount = invoiceData.amount;
   const amount = invoiceData.btc_amount;
+  const store = invoiceData.store_name
 
   const options = {
     label: `Payment for ${description} at ${store}`,
