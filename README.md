@@ -40,7 +40,9 @@ Make the necessary changes to config/config.json. We use Sequelize to interact w
 You are now ready to start creating invoices and accepting Bitcoin.
 
 ### Pending:
-- Add edit functionality to all of the models.
+- Integrating Submarine Swaps. This introduces convenience for the merchant and their clients. 
+- Adding integrations for conventional ecommerce platforms like WooCommerce and Shopify so merchants can accept Bitcoin Payments. 
+  
 
 ### Credit
 The incredible supportive team at [Qala](https://qala.dev) 
